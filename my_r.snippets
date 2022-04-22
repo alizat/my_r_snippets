@@ -1,0 +1,513 @@
+
+
+# ------------------------------------------------------------
+# libraries
+# ------------------------------------------------------------
+
+snippet pkginstall "packages I usually install when setting up a new R environment"
+	install.packages(
+	  c(
+	    "tidyverse",
+	    "lubridate",
+	    "data.table",
+	    "xgboost",
+	    "arules",
+	    "arulesViz",
+	    "dtplyr",
+	    "readxl",
+	    "plotly",
+	    "tictoc",
+	    "glue",
+	    "fst",
+	    "httr",
+	    "jsonlite",
+	    "odbc",
+	    "DBI",
+	    "RMySQL",
+	    "shiny",
+	    "shinydashboard",
+	    "shinymanager",
+	    "naniar",
+	    "DiagrammeR",
+	    "leaflet",
+	    "parallel",
+	    "DT",
+	    "networkD3",
+	    "ggiraph",
+	    "dygraphs",
+	    "rbokeh",
+	    "echarts4r",
+	    "canvasXpress",
+	    "sunburstR",
+	    "collapsibleTree",
+	    "scatterD3",
+	    "qtlcharts",
+	    "d3Tree",
+	    "radarchart",
+	    "pairsD3",
+	    "upsetjs",
+	    "apexcharter",
+	    "parcats"
+	  ),
+	  repo = "http://cran.rstudio.com/"
+	)
+
+snippet libs "my favorite libraries"
+	library(tidyverse)
+	library(lubridate)
+	library(plotly)
+	library(tictoc)
+	library(glue)
+	
+	options(dplyr.summarise.inform = FALSE)
+
+snippet tv "load tidyverse"
+	library(tidyverse)
+
+snippet tidyverse "load all individual libraries of tidyverse"
+	library(ggplot2)
+	library(tibble)
+	library(tidyr)
+	library(readr)
+	library(purrr)
+	library(dplyr)
+	library(stringr)
+	library(forcats)
+	library(lubridate)
+	library(glue)
+	library(fs)
+
+# ------------------------------------------------------------
+# operators
+# ------------------------------------------------------------
+
+snippet op:default
+	# use y if x is.null
+	`%||%` <- function(x, y) if (is.null(x)) y else x
+
+snippet op:notnull
+	# use y if x is not null (otherwise NULL)
+	`%??%` <- function(x, y) if (!is.null(x)) y
+
+snippet op:notnullish
+	# use y if x is not null(ish) (otherwise NULL)
+	`%??%` <- function(x, y) if (!is.null(x) && x != "") y
+
+# ------------------------------------------------------------
+# general
+# ------------------------------------------------------------
+
+snippet prettydate
+	strftime(Sys.time(), "%A, %b %d, %Y")
+
+snippet hdr
+	# ---- ${1:header} ----
+
+snippet ie
+	if (${1:cond}) ${2:true} else ${3:false}
+
+# ------------------------------------------------------------
+# ggplot2
+# ------------------------------------------------------------
+
+snippet gg "ggplot generic"
+	ggplot(${1:data}, aes(${2:aes})) + ${0}
+
+snippet gl "ggplot line"
+	ggplot(${1:data}, aes(${2:x}, ${3:y})) + geom_line()${0}
+
+snippet gp "ggplot point"
+	ggplot(${1:data}, aes(${2:x}, ${3:y})) + geom_point()${0}
+
+snippet gb "ggplot bar"
+	${1:data} %>% 
+	  count(${2:var}) %>% 
+	  ggplot(aes(${2:var}, n)) + 
+	  geom_bar(stat = 'identity')
+
+snippet gs "ggsave()"
+	ggsave("${1:filename}.pdf", width = ${2:6}, height = ${3:6})${0}
+
+snippet gglegendhide
+	theme(legend.position = 'none')
+
+snippet ggscalecontinuousnormal
+	scale_x_continuous(labels = scales::comma)
+
+snippet ge "geom_*"
+	geom_${1:point}(${0})
+
+snippet ggeb "element_blank"
+	element_blank($0)
+
+snippet gger "element_rect"
+	element_rect($0)
+
+snippet gget "element_text"
+	element_text($0)
+
+snippet ggel "element_line"
+	element_line($0)
+
+# ------------------------------------------------------------
+# wrangling
+# ------------------------------------------------------------
+
+snippet pvwider
+	pivot_wider(names_from = ${1:names_col}, values_from = ${2:values_col}, values_fill = ${3:0})
+
+snippet pvlonger
+	pivot_longer(cols = ${1:my_cols}, names_to = ${2:names_col}, values_to = ${3:values_col})
+
+# ------------------------------------------------------------
+# reading
+# ------------------------------------------------------------
+
+snippet xlsxread "read all sheets of an xlsx file into a list"
+	read_entire_xlsx <- function(xlsx_file) {
+	  all_sheets <- readxl::excel_sheets(xlsx_file)
+	  all_sheets %>% map(~ readxl::read_xlsx(xlsx_file, sheet = .x) %>% mutate_all(as.character)) %>% set_names(all_sheets)
+	}
+	stuff <- read_entire_xlsx(${1:file})
+
+# ------------------------------------------------------------
+# environment
+# ------------------------------------------------------------
+
+snippet arabiclocaleenv "Arabic characters to appear fine in RStudio console (Windows)"
+	Sys.setlocale(locale = "Arabic")
+
+snippet arabiclocaleparam
+	locale = locale(encoding = "Windows-1256") "locale parameters in read_* functions of readr package"
+
+snippet lsobjects
+	.ls.objects <- function (pos = 1, pattern, order.by = ""Size"", decreasing=TRUE, head = TRUE, n = 10) {
+	    # based on postings by Petr Pikal and David Hinds to the r-help list in 2004
+	    # modified by: Dirk Eddelbuettel (http://stackoverflow.com/questions/1358003/tricks-to-manage-the-available-memory-in-an-r-session) 
+	    # I then gave it a few tweaks (show size as megabytes and use defaults that I like)
+	    # a data frame of the objects and their associated storage needs.
+	    napply <- function(names, fn) sapply(names, function(x)
+	        fn(get(x, pos = pos)))
+	    names <- ls(pos = pos, pattern = pattern)
+	    obj.class <- napply(names, function(x) as.character(class(x))[1])
+	    obj.mode <- napply(names, mode)
+	    obj.type <- ifelse(is.na(obj.class), obj.mode, obj.class)
+	    obj.size <- napply(names, object.size) / 10^6 # megabytes
+	    obj.dim <- t(napply(names, function(x)
+	        as.numeric(dim(x))[1:2]))
+	    vec <- is.na(obj.dim)[, 1] & (obj.type != ""function"")
+	    obj.dim[vec, 1] <- napply(names, length)[vec]
+	    out <- data.frame(obj.type, obj.size, obj.dim)
+	    names(out) <- c(""Type"", ""Size"", ""Rows"", ""Columns"")
+	    out <- out[order(out[[order.by]], decreasing=decreasing), ]
+	    if (head)
+	        out <- head(out, n)
+	    out
+	}
+
+# ------------------------------------------------------------
+# machine learning
+# ------------------------------------------------------------
+
+snippet xgbmodel_reg
+	dta_to_build_model_with <- ${1:data}
+	target_variable <- '${2:targetvar}'
+	
+	library(xgboost)
+	library(pROC)
+	
+	set.seed(1023154)
+	dta_to_build_model_with <- 1:nrow(dta_to_build_model_with)
+	df_train <- dta_to_build_model_with %>% dplyr::sample_n(floor(0.6 * nrow(.)))
+	df_val   <- dta_to_build_model_with %>% dplyr::setdiff(df_train) %>% dplyr::sample_n(floor(0.5 * nrow(.)))
+	df_test  <- dta_to_build_model_with %>% dplyr::setdiff(df_train) %>% dplyr::setdiff(df_val)
+	
+	dta_to_build_model_with <- dta_to_build_model_with %>% select(-indx)
+	df_train <- df_train %>% select(-indx)
+	df_val <- df_val %>% select(-indx)
+	df_test <- df_test %>% select(-indx)
+	
+	hypergrid <- expand_grid(eta       = seq(0.1, 0.9, 0.2),
+	                         max_depth = seq(2, 8, 2),
+	                         nrounds   = seq(10, 50, 10), 
+	                         auc = 0, 
+	                         avg_error = 0, 
+	                         med_error = 0)
+	print(glue('Hyperparameter tuning begins...'))
+	best_val_AUC         <- -1
+	best_val_predictions <- NULL
+	for (i in 1:nrow(hypergrid)) {
+	    xgb <- xgboost(data      = df_train %>% select(-all_of(target_variable)) %>% data.matrix,
+	                   label     = df_train[[target_variable]],
+	                   eta       = hypergrid[['eta']][i],
+	                   max_depth = hypergrid[['max_depth']][i],
+	                   nrounds   = hypergrid[['nrounds']][i],
+	                   objective = ""reg:squarederror"",  ## 'binary:logistic' if classification
+	                   # eval_metric = 'auc',  ## uncomment this line if classification
+	                   verbose   = 0)
+	    predictions <- predict(xgb, data.matrix(df_val %>% select(-all_of(target_variable))))
+	    
+	    ## compute area under ROC curve
+	    actual <- df_val[[target_variable]]
+	    suppressMessages({ hypergrid[['auc']][i] <- auc(roc(actual, predictions)) %>% as.numeric() })
+	    
+	    print_me <- glue(""[{now()}]"")
+	    print_me <- glue(""[{, print_me}eta={hypergrid[['eta']][i]}"")
+	    print_me <- glue(""[{, print_me}max_depth={hypergrid[['max_depth']][i]}"")
+	    print_me <- glue(""[{, print_me}nrounds={hypergrid[['nrounds']][i]}"")
+	    print_me <- glue(""[{, print_me}auc={hypergrid[['auc']][i]}"")
+	    
+	    ## regression only
+	    hypergrid[['avg_error']][i] <-   mean(abs(predictions - df_val[[target_variable]]) / df_val[[target_variable]], na.rm = TRUE)
+	    hypergrid[['med_error']][i] <- median(abs(predictions - df_val[[target_variable]]) / df_val[[target_variable]], na.rm = TRUE)
+	    print_me <- glue(""[{, print_me}avg_error={round(hypergrid[['avg_error']][i] * 100, 1)}%"")
+	    print_me <- glue(""[{, print_me}med_error={round(hypergrid[['med_error']][i] * 100, 1)}%"")
+	    
+	    print(print_me)
+	    
+	    if (best_val_AUC < hypergrid[['auc']][i]) {
+	      best_val_AUC         <- hypergrid[['auc']][i]
+	      best_val_predictions <- val_predictions
+	    }
+	}
+	print(glue('Hyperparameter tuning ends...'))
+	best_params <- 
+	    hypergrid %>% 
+	    arrange(desc(auc)) %>% 
+	    head(1) %>% 
+	    as.list()
+	
+	print(glue('Prediciting on test set...'))
+	xgb <- xgboost(data      = df_train %>% rbind(df_val) %>% select(-all_of(target_variable)) %>% data.matrix,
+	               label     = (df_train %>% rbind(df_val))[[target_variable]],
+	               eta       = best_params[['eta']][i],
+	               max_depth = best_params[['max_depth']][i],
+	               nrounds   = best_params[['nrounds']][i],
+	               objective = ""reg:squarederror"",  ## 'binary:logistic' if classification
+	               # eval_metric = 'auc',  ## uncomment this line if classification
+	               verbose   = 0)
+	predictions <- predict(xgb, data.matrix(df_test %>% select(-all_of(target_variable))))
+	
+	## compute area under ROC curve
+	actual <- df_val[[target_variable]]
+	suppressMessages({ hypergrid[['auc']][i] <- auc(roc(actual, predictions)) %>% as.numeric() })
+	
+	print(glue(""    eta       = {best_params[['eta']][i]}""))
+	print(glue(""    max_depth = {best_params[['max_depth']][i]}""))
+	print(glue(""    nrounds   = {best_params[['nrounds']][i]}""))
+	print(glue(""    auc       = {best_params[['auc']][i]}""))
+	
+	## regression only
+	avg_error_test <-   mean(abs(predictions - df_test[[target_variable]]) / df_test[[target_variable]], na.rm = TRUE)
+	med_error_test <- median(abs(predictions - df_test[[target_variable]]) / df_test[[target_variable]], na.rm = TRUE)
+	print(glue(""    avg_error = {best_params[['avg_error']][i]}%""))
+	print(glue(""    med_error = {best_params[['med_error']][i]}%""))
+	
+	## append details of model training
+	stuff <- list()
+	stuff[['mdl']] <- xgb
+	stuff[['hypergrid']] <- hypergrid
+	stuff[['best_params']] <- best_params
+	stuff[['val_pred_vs_actual']] <- 
+	    tibble(pred = best_val_predictions,
+	           actual = df_val[[target_variable]])
+	histogram_plotter <- function(pred_vs_actual) {
+	  pred_vs_actual %>% 
+	    ggplot(aes(x = pred, fill = actual_aux)) + 
+	    geom_histogram(binwidth = 0.01, 
+	                   position = 'identity', 
+	                   alpha = 0.5)
+	}
+	stuff[['val_histogram_plot']] <- histogram_plotter(stuff)
+	# stuff[['val_ct']] <- coverager(preds = best_val_predictions, actual_binary = df_val[[target_variable]])
+	
+	# ## append the inputs that were given to this function
+	# stuff[['train_set']]               <- train_set
+	# stuff[['validation_set']]          <- validation_set
+	# stuff[['explanatory_variables']]   <- explanatory_variables
+	# stuff[['target_variable']]         <- target_variable
+	# stuff[['target_variable_mapping']] <- target_variable_mapping
+
+# ------------------------------------------------------------
+# shiny
+# ------------------------------------------------------------
+
+snippet shinyauth
+	library(shiny)
+	library(shinymanager)
+	
+	credentials <-
+			data.frame(user = c(""shiny"", ""shinymanager""),
+					   password = c(""azerty"", ""12345""),
+					   admin = c(T, F),
+					   stringsAsFactors = FALSE)
+	
+	# Define UI for application that draws a histogram
+	ui <- fluidPage(
+		
+		# Application title
+		titlePanel(""Old Faithful Geyser Data""),
+		
+		# Sidebar with a slider input for number of bins 
+		sidebarLayout(
+			sidebarPanel(
+				sliderInput(""bins"",
+							""Number of bins:"",
+							min = 1,
+							max = 50,
+							value = 30)
+			),
+			
+			# Show a plot of the generated distribution
+			mainPanel(
+				plotOutput(""distPlot"")
+			)
+		)
+	)
+	
+	ui <- secure_app(ui, enable_admin = T)
+	
+	# Define server logic required to draw a histogram
+	server <- function(input, output) {
+	
+		secure_server(check_credentials = check_credentials(credentials))
+		
+		output$distPlot <- renderPlot({
+			# generate bins based on input$bins from ui.R
+			x    <- faithful[, 2]
+			bins <- seq(min(x), max(x), length.out = input$bins + 1)
+			
+			# draw the histogram with the specified number of bins
+			hist(x, breaks = bins, col = 'darkgray', border = 'white')
+		})
+	}
+	
+	# Run the application 
+	shinyApp(ui = ui, server = server)
+
+# ------------------------------------------------------------
+# parallelism
+# ------------------------------------------------------------
+
+snippet prlll
+	${1:data} <- ${1:data} %>% as.data.table() %>% split(by = c('${2:groupvars}'))
+	ggg <- gc()  ## garbage collection (silent)
+	
+	## prepare for parallelization
+	library(parallel)
+	num_cores_total <- detectCores()
+	num_cores_to_use <- floor(num_cores_total * 0.75) - 1
+	# print('# cores to use:' %>% paste(num_cores_to_use))
+	clust <- makeCluster(getOption(""cl.cores"", num_cores_to_use))
+	
+	## PARALLELISM !!!
+	${1:data} <- parLapplyLB(clust, ${1:data}, function(df) {
+		library(tidyverse)
+		library(lubridate)
+		
+		# ## stuff you wanna do!
+		# df <- df %>% <do something here!!!>
+		
+		## return processed result
+		df
+	})
+	
+	## 10 seconds pause after above parallel computation
+	Sys.sleep(time = 10)
+	
+	## clean up
+	stopCluster(clust)
+	
+	## merge results of the different cores
+	${1:data} <- ${1:data} %>% data.table::rbindlist()
+
+# ------------------------------------------------------------
+# summaries
+# ------------------------------------------------------------
+
+snippet grp_cnt
+	dta_to_count <- ${1:data}
+	grpvars <- c('${2:groupvars}')
+	dta_to_count %>% 
+		group_by_at(all_of(grpvars)) %>% 
+		summarise(n = n(), .groups = 'drop_last') %>% 
+		ungroup()
+
+snippet grp_qtiles
+	dta_to_quantile <- ${1:data}
+	grpvars <- c('${2:groupvars}')
+	p0   <- function(x) {min(x, na.rm = TRUE)}
+	p5   <- function(x) {quantile(x, probs = 0.05, na.rm = TRUE)}
+	p25  <- function(x) {quantile(x, probs = 0.25, na.rm = TRUE)}
+	p50  <- function(x) {quantile(x, probs = 0.50, na.rm = TRUE)}
+	p75  <- function(x) {quantile(x, probs = 0.75, na.rm = TRUE)}
+	p95  <- function(x) {quantile(x, probs = 0.95, na.rm = TRUE)}
+	p100 <- function(x) {max(x, na.rm = TRUE)}
+	ps <- list(MIN = p0, 
+	           p5  = p5, 
+	           p25 = p25, 
+	           p50 = p50, 
+	           p75 = p75, 
+	           p95 = p95, 
+	           MAX = p100, 
+	           n = length)
+	display_me <-
+		dta_to_quantile %>% 
+		mutate(super_unique_column = 1) %>% 
+		# lazy_dt() %>% 
+		group_by(across(all_of(grpvars))) %>% 
+		summarise_if(is.numeric, .funs = ps) %>% 
+		ungroup() %>% 
+		select(-starts_with('super_unique_column')) %>% 
+		# as_tibble() %>% 
+	    pivot_longer(cols = (length(grpvars) + 1):ncol(.),
+	                 names_to = c('feature', 'qtile'),
+	                 names_pattern = '(.*)_(.*)', 
+	                 values_to = 'val') %>% 
+	    mutate(qtile = qtile %>% factor(levels = c('MIN','p5','p25','p50','p75','p95','MAX', 'n'))) %>%
+	    pivot_wider(names_from = feature, values_from = val)
+	silence <- 
+	    display_me %>% 
+	    group_by_at(all_of(grpvars)) %>% 
+	    do({
+	        my_stuff <- .
+	        
+	        print(glue(''))
+	        for (i in 1:length(grpvars)) {
+	            print(glue('{grpvars[i]} = {my_stuff %>% select(all_of(grpvars[i])) %>% pull() %>% unique()}'))
+	        }
+	        print(glue('Number of Observations = {my_stuff %>% filter(qtile == ""n"") %>% select(-qtile, -all_of(grpvars)) %>% unlist() %>% tail(1)}'))
+	        my_stuff %>% filter(qtile != 'n') %>% print()
+	        print(glue(''))
+	        
+	        my_stuff
+	    }) %>% 
+	    ungroup()
+
+snippet grp_summary
+	dta_to_summarize <- ${1:data}
+	grpvars <- c('${2:groupvars}')
+	silence <- 
+	    dta_to_summarize %>% 
+	    group_by(across(all_of(grpvars))) %>% 
+	    do({
+	        my_stuff <- .
+	        
+	        print(glue(''))
+	        for (i in 1:length(grpvars)) {
+	            print(glue('{grpvars[i]} = {my_stuff %>% select(all_of(grpvars[i])) %>% pull() %>% unique()}'))
+	        }
+	        print(glue('Number of Observations = {my_stuff %>% nrow()}'))
+	        print(my_stuff %>% select(-all_of(grpvars)) %>% summary())
+	        print(glue(''))
+	        
+	        my_stuff
+	    }) %>% 
+	    ungroup()
+
+snippet grp_smr
+	${1:data} %>% 
+	  group_by(${2:grpvar}) %>% 
+	  summarise(${3:across(everything(), mean)}) %>% 
+	  ungroup()
+
