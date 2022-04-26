@@ -47,7 +47,9 @@ snippet pkginstall "packages I usually install when setting up a new R environme
 	    "pairsD3",
 	    "upsetjs",
 	    "apexcharter",
-	    "parcats"
+	    "parcats",
+	    "osmdata",
+	    "sf"
 	  ),
 	  repo = "http://cran.rstudio.com/"
 	)
@@ -58,6 +60,20 @@ snippet libs "my favorite libraries"
 	library(plotly)
 	library(tictoc)
 	library(glue)
+	
+	options(dplyr.summarise.inform = FALSE)
+
+snippet libs4shiny "libraries I regularly use in shiny apps"
+	library(tidyverse)
+	library(lubridate)
+	library(plotly)
+	library(tictoc)
+	library(glue)
+	
+	library(shiny)
+	library(shinymanager)
+	library(leaflet)
+	library(DT)
 	
 	options(dplyr.summarise.inform = FALSE)
 

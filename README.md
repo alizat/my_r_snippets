@@ -1,6 +1,9 @@
 # My R Snippets
 My own R snippets. Feel free to copy and use.
 
+Note that these snippets are a work in progress, and I intend to fine-tune 
+some of them further. Stay tuned.
+
 I got (and will get more) inspiration from these links:
 
 * https://github.com/gadenbuie/snippets/blob/main/r.snippets
