@@ -7,31 +7,38 @@
 snippet pkginstall "packages I usually install when setting up a new R environment"
 	install.packages(
 	  c(
+	    ## data structures/wrangling/read/write/analysis
 	    "tidyverse",
 	    "lubridate",
 	    "data.table",
-	    "xgboost",
-	    "arules",
-	    "arulesViz",
-	    "dtplyr",
+	    "zeallot",
 	    "readxl",
-	    "plotly",
-	    "tictoc",
+	    "dtplyr",
+	    "naniar",
+	    "skimr",
 	    "glue",
 	    "fst",
-	    "httr",
-	    "jsonlite",
+	    
+	    ## DB
 	    "odbc",
 	    "DBI",
 	    "RMySQL",
+	    
+	    ## shiny
 	    "shiny",
 	    "shinydashboard",
 	    "shinymanager",
-	    "naniar",
-	    "DiagrammeR",
+	    "DT",
+	    
+	    ## maps
 	    "leaflet",
 	    'geosphere',
-	    "DT",
+	    "osmdata",
+	    "sf",
+	    
+	    ## data viz
+	    "scales",
+	    "plotly",
 	    "networkD3",
 	    "ggiraph",
 	    "dygraphs",
@@ -48,11 +55,18 @@ snippet pkginstall "packages I usually install when setting up a new R environme
 	    "upsetjs",
 	    "apexcharter",
 	    "parcats",
-	    "osmdata",
-	    "sf",
-	    "skimr",
-	    "zeallot",
-	    "pROC"
+	    "DiagrammeR",
+	    
+	    ## machine learning
+	    "pROC",
+	    "xgboost",
+	    "arules",
+	    "arulesViz",
+	    "httr",
+	    "jsonlite",
+	    
+	    ## miscellaneous
+	    "tictoc"
 	  ),
 	  repo = "http://cran.rstudio.com/"
 	)
