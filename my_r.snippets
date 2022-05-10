@@ -95,7 +95,12 @@ snippet install.packages "packages to install in a new R environment"
 	    "tictoc"
 	  ),
 	  repo = "http://cran.rstudio.com/"
+	  # repo = "https://cloud.r-project.org"
+	  # repo = "http://cran.us.r-project.org"
 	)
+
+snippet install_version "install specific version of a library"
+	devtools::install_version(${1:ggplot2} version = ${2:0.9.1}, repos = "http://cran.us.r-project.org")
 
 snippet libs "my favorite libraries"
 	library(tidyverse)
@@ -106,7 +111,7 @@ snippet libs "my favorite libraries"
 	
 	options(dplyr.summarise.inform = FALSE)
 
-snippet libs4shiny "libraries I regularly use in shiny apps"
+snippet libs4shiny "libraries to use in shiny apps"
 	library(tidyverse)
 	library(lubridate)
 	library(plotly)
@@ -123,7 +128,7 @@ snippet libs4shiny "libraries I regularly use in shiny apps"
 snippet tv "load tidyverse"
 	library(tidyverse)
 
-snippet tvall "load all individual libraries of tidyverse"
+snippet tvall "load tidyverse individual libraries"
 	library(ggplot2)
 	library(tibble)
 	library(tidyr)
@@ -187,10 +192,10 @@ snippet gb "ggplot bar"
 snippet gs "ggsave()"
 	ggsave("${1:filename}.pdf", width = ${2:6}, height = ${3:6})${0}
 
-snippet gglegendhide
+snippet gglegendhide "hide the legend"
 	theme(legend.position = 'none')
 
-snippet ggscalecontinuousnormal
+snippet ggscalecontinuousnormal "non-scientific tick values"
 	scale_x_continuous(labels = scales::comma)
 
 snippet ge "geom_*"
@@ -212,10 +217,10 @@ snippet ggel "element_line"
 # wrangling
 # ------------------------------------------------------------
 
-snippet pvwider
+snippet pivot_wider
 	pivot_wider(names_from = ${1:names_col}, values_from = ${2:values_col}, values_fill = ${3:0})
 
-snippet pvlonger
+snippet pivot_longer
 	pivot_longer(cols = ${1:my_cols}, names_to = ${2:names_col}, values_to = ${3:values_col})
 
 # ------------------------------------------------------------
@@ -240,7 +245,7 @@ snippet arabiclocaleparam "locale parameters in read_* functions of readr packag
 	locale = locale(encoding = "Windows-1256")
 
 snippet lsobjects
-	.ls.objects <- function (pos = 1, pattern, order.by = ""Size"", decreasing=TRUE, head = TRUE, n = 10) {
+	.ls.objects <- function (pos = 1, pattern, order.by = "Size", decreasing=TRUE, head = TRUE, n = 10) {
 	    # based on postings by Petr Pikal and David Hinds to the r-help list in 2004
 	    # modified by: Dirk Eddelbuettel (http://stackoverflow.com/questions/1358003/tricks-to-manage-the-available-memory-in-an-r-session) 
 	    # I then gave it a few tweaks (show size as megabytes and use defaults that I like)
@@ -254,10 +259,10 @@ snippet lsobjects
 	    obj.size <- napply(names, object.size) / 10^6 # megabytes
 	    obj.dim <- t(napply(names, function(x)
 	        as.numeric(dim(x))[1:2]))
-	    vec <- is.na(obj.dim)[, 1] & (obj.type != ""function"")
+	    vec <- is.na(obj.dim)[, 1] & (obj.type != "function")
 	    obj.dim[vec, 1] <- napply(names, length)[vec]
 	    out <- data.frame(obj.type, obj.size, obj.dim)
-	    names(out) <- c(""Type"", ""Size"", ""Rows"", ""Columns"")
+	    names(out) <- c("Type", "Size", "Rows", "Columns")
 	    out <- out[order(out[[order.by]], decreasing=decreasing), ]
 	    if (head)
 	        out <- head(out, n)
@@ -289,7 +294,7 @@ snippet xgbmodel_reg
 	hypergrid <- expand_grid(eta       = seq(0.1, 0.9, 0.2),
 	                         max_depth = seq(2, 8, 2),
 	                         nrounds   = seq(10, 50, 10), 
-	                         auc = 0, 
+	                         auc       = 0, 
 	                         avg_error = 0, 
 	                         med_error = 0)
 	print(glue('Hyperparameter tuning begins...'))
@@ -301,7 +306,7 @@ snippet xgbmodel_reg
 	                   eta       = hypergrid[['eta']][i],
 	                   max_depth = hypergrid[['max_depth']][i],
 	                   nrounds   = hypergrid[['nrounds']][i],
-	                   objective = ""reg:squarederror"",  ## 'binary:logistic' if classification
+	                   objective = "reg:squarederror",  ## 'binary:logistic' if classification
 	                   # eval_metric = 'auc',  ## uncomment this line if classification
 	                   verbose   = 0)
 	    predictions <- predict(xgb, data.matrix(df_val %>% select(-all_of(target_variable))))
@@ -310,17 +315,17 @@ snippet xgbmodel_reg
 	    actual <- df_val[[target_variable]]
 	    suppressMessages({ hypergrid[['auc']][i] <- auc(roc(actual, predictions)) %>% as.numeric() })
 	    
-	    print_me <- glue(""[{now()}]"")
-	    print_me <- glue(""[{, print_me}eta={hypergrid[['eta']][i]}"")
-	    print_me <- glue(""[{, print_me}max_depth={hypergrid[['max_depth']][i]}"")
-	    print_me <- glue(""[{, print_me}nrounds={hypergrid[['nrounds']][i]}"")
-	    print_me <- glue(""[{, print_me}auc={hypergrid[['auc']][i]}"")
+	    print_me <- glue("[{now()}]")
+	    print_me <- glue("[{, print_me}eta={hypergrid[['eta']][i]}")
+	    print_me <- glue("[{, print_me}max_depth={hypergrid[['max_depth']][i]}")
+	    print_me <- glue("[{, print_me}nrounds={hypergrid[['nrounds']][i]}")
+	    print_me <- glue("[{, print_me}auc={hypergrid[['auc']][i]}")
 	    
 	    ## regression only
 	    hypergrid[['avg_error']][i] <-   mean(abs(predictions - df_val[[target_variable]]) / df_val[[target_variable]], na.rm = TRUE)
 	    hypergrid[['med_error']][i] <- median(abs(predictions - df_val[[target_variable]]) / df_val[[target_variable]], na.rm = TRUE)
-	    print_me <- glue(""[{, print_me}avg_error={round(hypergrid[['avg_error']][i] * 100, 1)}%"")
-	    print_me <- glue(""[{, print_me}med_error={round(hypergrid[['med_error']][i] * 100, 1)}%"")
+	    print_me <- glue("[{, print_me}avg_error={round(hypergrid[['avg_error']][i] * 100, 1)}%")
+	    print_me <- glue("[{, print_me}med_error={round(hypergrid[['med_error']][i] * 100, 1)}%")
 	    
 	    print(print_me)
 	    
@@ -342,7 +347,7 @@ snippet xgbmodel_reg
 	               eta       = best_params[['eta']][i],
 	               max_depth = best_params[['max_depth']][i],
 	               nrounds   = best_params[['nrounds']][i],
-	               objective = ""reg:squarederror"",  ## 'binary:logistic' if classification
+	               objective = "reg:squarederror",  ## 'binary:logistic' if classification
 	               # eval_metric = 'auc',  ## uncomment this line if classification
 	               verbose   = 0)
 	predictions <- predict(xgb, data.matrix(df_test %>% select(-all_of(target_variable))))
@@ -351,16 +356,16 @@ snippet xgbmodel_reg
 	actual <- df_val[[target_variable]]
 	suppressMessages({ hypergrid[['auc']][i] <- auc(roc(actual, predictions)) %>% as.numeric() })
 	
-	print(glue(""    eta       = {best_params[['eta']][i]}""))
-	print(glue(""    max_depth = {best_params[['max_depth']][i]}""))
-	print(glue(""    nrounds   = {best_params[['nrounds']][i]}""))
-	print(glue(""    auc       = {best_params[['auc']][i]}""))
+	print(glue("    eta       = {best_params[['eta']][i]}"))
+	print(glue("    max_depth = {best_params[['max_depth']][i]}"))
+	print(glue("    nrounds   = {best_params[['nrounds']][i]}"))
+	print(glue("    auc       = {best_params[['auc']][i]}"))
 	
 	## regression only
 	avg_error_test <-   mean(abs(predictions - df_test[[target_variable]]) / df_test[[target_variable]], na.rm = TRUE)
 	med_error_test <- median(abs(predictions - df_test[[target_variable]]) / df_test[[target_variable]], na.rm = TRUE)
-	print(glue(""    avg_error = {best_params[['avg_error']][i]}%""))
-	print(glue(""    med_error = {best_params[['med_error']][i]}%""))
+	print(glue("    avg_error = {best_params[['avg_error']][i]}%"))
+	print(glue("    med_error = {best_params[['med_error']][i]}%"))
 	
 	## append details of model training
 	stuff <- list()
@@ -393,55 +398,24 @@ snippet xgbmodel_reg
 
 snippet shinyauth
 	library(shiny)
-	library(shinymanager)
+	${1:library(shinymanager)}
 	
-	credentials <-
-			data.frame(user = c(""shiny"", ""shinymanager""),
-					   password = c(""azerty"", ""12345""),
+	${2:credentials <-
+			data.frame(user = c("shiny", "shinymanager"),
+					   password = c("azerty", "12345"),
 					   admin = c(T, F),
-					   stringsAsFactors = FALSE)
+					   stringsAsFactors = FALSE)}
 	
-	# Define UI for application that draws a histogram
-	ui <- fluidPage(
-		
-		# Application title
-		titlePanel(""Old Faithful Geyser Data""),
-		
-		# Sidebar with a slider input for number of bins 
-		sidebarLayout(
-			sidebarPanel(
-				sliderInput(""bins"",
-							""Number of bins:"",
-							min = 1,
-							max = 50,
-							value = 30)
-			),
-			
-			# Show a plot of the generated distribution
-			mainPanel(
-				plotOutput(""distPlot"")
-			)
-		)
-	)
+	ui <- fluidPage()
 	
-	ui <- secure_app(ui, enable_admin = T)
+	${3:ui <- secure_app(ui, enable_admin = T)}
 	
-	# Define server logic required to draw a histogram
 	server <- function(input, output) {
 	
-		secure_server(check_credentials = check_credentials(credentials))
+		${4:secure_server(check_credentials = check_credentials(credentials))}
 		
-		output$distPlot <- renderPlot({
-			# generate bins based on input$bins from ui.R
-			x    <- faithful[, 2]
-			bins <- seq(min(x), max(x), length.out = input$bins + 1)
-			
-			# draw the histogram with the specified number of bins
-			hist(x, breaks = bins, col = 'darkgray', border = 'white')
-		})
 	}
 	
-	# Run the application 
 	shinyApp(ui = ui, server = server)
 
 # ------------------------------------------------------------
@@ -457,7 +431,7 @@ snippet prlll
 	num_cores_total <- detectCores()
 	num_cores_to_use <- floor(num_cores_total * 0.75) - 1
 	# print('# cores to use:' %>% paste(num_cores_to_use))
-	clust <- makeCluster(getOption(""cl.cores"", num_cores_to_use))
+	clust <- makeCluster(getOption("cl.cores", num_cores_to_use))
 	
 	## PARALLELISM !!!
 	${1:data} <- parLapplyLB(clust, ${1:data}, function(df) {
@@ -535,7 +509,7 @@ snippet grp_qtiles
 	        for (i in 1:length(grpvars)) {
 	            print(glue('{grpvars[i]} = {my_stuff %>% select(all_of(grpvars[i])) %>% pull() %>% unique()}'))
 	        }
-	        print(glue('Number of Observations = {my_stuff %>% filter(qtile == ""n"") %>% select(-qtile, -all_of(grpvars)) %>% unlist() %>% tail(1)}'))
+	        print(glue('Number of Observations = {my_stuff %>% filter(qtile == "n") %>% select(-qtile, -all_of(grpvars)) %>% unlist() %>% tail(1)}'))
 	        my_stuff %>% filter(qtile != 'n') %>% print()
 	        print(glue(''))
 	        

@@ -9,5 +9,5 @@ I got (and will get more) inspiration from these links:
 * https://notes.peter-baumgartner.net/2019/06/12/rstudio-snippets-for-markdown/
 * https://rstudio.github.io/rstudio-extensions/rstudio_snippets.html
 
-Note that these snippets are a work in progress, and I intend to fine-tune 
-some of them further in the near future. Stay tuned.
+These snippets are a work in progress, and I will keep adding and fine-tuning
+them for some time. Check again every once in a while.
