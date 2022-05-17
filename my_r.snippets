@@ -217,6 +217,17 @@ snippet ggel "element_line"
 	element_line($0)
 
 # ------------------------------------------------------------
+# visualization
+# ------------------------------------------------------------
+
+snippet corrfunnel
+	library(correlationfunnel)
+	${1:iris} %>%
+		binarize(n_bins = 6) %>%
+		correlate(${2:Species__setosa}) %>%
+		plot_correlation_funnel(interactive = TRUE, alpha = 0.7)
+
+# ------------------------------------------------------------
 # wrangling
 # ------------------------------------------------------------
 
