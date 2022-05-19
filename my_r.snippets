@@ -336,7 +336,7 @@ snippet ggel "element_line"
 # visualization
 # ------------------------------------------------------------
 
-snippet corrfunnel
+snippet corrfunnel "correlation funnel visualization"
 	library(correlationfunnel)
 	${1:iris} %>%
 		binarize(n_bins = 6) %>%
@@ -374,7 +374,7 @@ snippet arabiclocaleenv "Arabic characters to appear fine in RStudio console (Wi
 snippet arabiclocaleparam "locale parameters in read_* functions of readr package"
 	locale = locale(encoding = "Windows-1256")
 
-snippet lsobjects
+snippet lsobjects "get sizes of variables in environment"
 	.ls.objects <- function (pos = 1, pattern, order.by = "Size", decreasing=TRUE, head = TRUE, n = 10) {
 	    # based on postings by Petr Pikal and David Hinds to the r-help list in 2004
 	    # modified by: Dirk Eddelbuettel (http://stackoverflow.com/questions/1358003/tricks-to-manage-the-available-memory-in-an-r-session) 
@@ -398,6 +398,9 @@ snippet lsobjects
 	        out <- head(out, n)
 	    out
 	}
+
+snippet object_size "get size of specific variables in environment"
+	pryr::object_size(iris, mtcars)
 
 # ------------------------------------------------------------
 # machine learning
@@ -526,7 +529,7 @@ snippet xgbmodel_reg
 # shiny
 # ------------------------------------------------------------
 
-snippet shinyauth
+snippet shinyauth "add authentication to a shiny app"
 	library(shiny)
 	${1:library(shinymanager)}
 	
