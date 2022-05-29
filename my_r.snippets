@@ -591,6 +591,29 @@ snippet prlll
 # summaries
 # ------------------------------------------------------------
 
+snippet skm
+	skimr::skim_without_charts(${1:dplyr::storms}) %>% 
+	#arrange(n_missing, character.n_unique, factor.n_unique, sd)
+	do({
+	  df <- .
+	  
+	  df <- df %>% arrange(n_missing)
+	  
+		classes <- df %>% sapply(class) %>% unlist() %>% unique()
+		
+		if (any(classes %in% c('character','factor','ordered','Date','POSIXct','POSIXt'))) {
+			arrange_with_these <- colnames(df)[colnames(df) %>% str_detect('unique')]
+			df <- df %>% arrange(across(arrange_with_these))
+		}
+			
+		if (any(classes %in% c('numeric','integer','double'))) {
+			arrange_with_these <- colnames(df)[colnames(df) %>% str_detect('sd')]
+			df <- df %>% arrange(across(arrange_with_these))
+		}
+		
+		df
+	})
+
 snippet grp_cnt
 	dta_to_count <- ${1:data}
 	grpvars <- c('${2:groupvars}')
