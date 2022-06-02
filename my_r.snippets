@@ -358,7 +358,7 @@ snippet pivot_longer
 # ------------------------------------------------------------
 
 snippet read_csv
-	read_csv('${1:filename}', show_col_types = FALSE)
+	read_csv('${1:filename}', show_col_types = FALSE${2:, col_types = cols(.default = 'c')})
 
 snippet xlsxread "read all sheets of an xlsx file into a list"
 	read_entire_xlsx <- function(xlsx_file) {
