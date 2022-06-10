@@ -294,17 +294,16 @@ snippet ie
 # ------------------------------------------------------------
 
 snippet gg "ggplot generic"
-	ggplot(${1:data}, aes(${2:aes})) + ${0}
+	ggplot(aes(${2:aes})) + ${0}
 
 snippet gl "ggplot line"
-	ggplot(${1:data}, aes(${2:x}, ${3:y})) + geom_line()${0}
+	ggplot(aes(${2:x}, ${3:y})) + geom_line()${0}
 
 snippet gp "ggplot point"
-	ggplot(${1:data}, aes(${2:x}, ${3:y})) + geom_point()${0}
+	ggplot(aes(${2:x}, ${3:y})) + geom_point()${0}
 
 snippet gb "ggplot bar"
-	${1:data} %>% 
-	  count(${2:var}) %>% 
+	count(${2:var}) %>% 
 	  ggplot(aes(${2:var}, n)) + 
 	  geom_bar(stat = 'identity')
 
@@ -339,6 +338,7 @@ snippet ggel "element_line"
 snippet corrfunnel "correlation funnel visualization"
 	library(correlationfunnel)
 	${1:iris} %>%
+		drop_na() %>%
 		binarize(n_bins = 6) %>%
 		correlate(${2:Species__setosa}) %>%
 		plot_correlation_funnel(interactive = TRUE, alpha = 0.7)
@@ -366,6 +366,8 @@ snippet xlsxread "read all sheets of an xlsx file into a list"
 	  all_sheets %>% map(~ readxl::read_xlsx(xlsx_file, sheet = .x) %>% mutate_all(as.character)) %>% set_names(all_sheets)
 	}
 	stuff <- read_entire_xlsx(${1:file})
+	if (length(stuff) == 1)
+		stuff <- stuff[[1]]
 
 # ------------------------------------------------------------
 # environment
@@ -656,7 +658,7 @@ snippet grp_qtiles
 	                 names_to = c('feature', 'qtile'),
 	                 names_pattern = '(.*)_(.*)', 
 	                 values_to = 'val') %>% 
-	    mutate(qtile = qtile %>% factor(levels = c('MIN','p5','p25','p50','p75','p95','MAX', 'n'))) %>%
+	    mutate(qtile = qtile %>% factor(levels = names(ps))) %>%
 	    pivot_wider(names_from = feature, values_from = val)
 	silence <- 
 	    display_me %>% 
