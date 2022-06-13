@@ -203,6 +203,10 @@ snippet install.packages "packages to install in a new R environment"
 	    "arulesNBMiner", 
 	    "arulesSequences",
 	    
+	    # ## rfm
+	    # "rfm",
+	    # "fuzzyjoin",
+	    
 	    ## software engineering
 	    "httr",
 	    "jsonlite",
@@ -351,14 +355,23 @@ snippet pivot_wider
 	pivot_wider(names_from = ${1:names_col}, values_from = ${2:values_col}, values_fill = ${3:0})
 
 snippet pivot_longer
-	pivot_longer(cols = ${1:my_cols}, names_to = ${2:names_col}, values_to = ${3:values_col})
+	pivot_longer(cols = ${1:my_cols}, names_to = '${2:names_col}', values_to = '${3:values_col}')
 
 # ------------------------------------------------------------
-# reading
+# read/write
 # ------------------------------------------------------------
 
 snippet read_csv
 	read_csv('${1:filename}', show_col_types = FALSE${2:, col_types = cols(.default = 'c')})
+
+snippet read_tsv
+	read_tsv('${1:filename}', show_col_types = FALSE${2:, col_types = cols(.default = 'c')})
+
+snippet read_delim
+	read_delim('${1:filename}', delim = '${|}', show_col_types = FALSE${3:, col_types = cols(.default = 'c')})
+
+snippet read_fst
+	read_fst('${1:filename}')
 
 snippet xlsxread "read all sheets of an xlsx file into a list"
 	read_entire_xlsx <- function(xlsx_file) {
@@ -368,6 +381,15 @@ snippet xlsxread "read all sheets of an xlsx file into a list"
 	stuff <- read_entire_xlsx(${1:file})
 	if (length(stuff) == 1)
 		stuff <- stuff[[1]]
+
+snippet write_csv
+	write_csv('${1:filename}')
+
+snippet write_fst
+	write_fst('${1:filename}')
+
+snippet write_xlsx
+	writexl::write_xlsx('${1:filename}')
 
 # ------------------------------------------------------------
 # environment
