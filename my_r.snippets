@@ -578,6 +578,33 @@ snippet shinyauth "add authentication to a shiny app"
 	
 	shinyApp(ui = ui, server = server)
 
+snippet selectInput
+	selectInput(
+		inputId = '${1:my_select_input}', 
+		label = '${2:Select...}', 
+		choices = c(${3:'choice 1', 'choice 2'}), 
+		selected = ${4:'choice 1'}, 
+		multiple = ${5:FALSE}
+	)
+
+snippet sliderInput
+	sliderInput(
+		inputId = '${1:my_slider_input}', 
+		label = '${2:Select...}', 
+		min = ${3:0}, 
+		max = ${4:100}, 
+		value = ${5:50}
+	)
+
+snippet numericInput
+	numericInput(
+		inputId = '${1:my_numeric_input}', 
+		label = '${2:Select...}', 
+		min = ${3:0}, 
+		max = ${4:100}, 
+		value = ${5:50}
+	)
+
 # ------------------------------------------------------------
 # parallelism
 # ------------------------------------------------------------
