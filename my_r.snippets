@@ -610,7 +610,7 @@ snippet numericInput
 # ------------------------------------------------------------
 
 snippet prlll
-	${1:data} <- ${1:data} %>% as.data.table() %>% split(by = c('${2:groupvars}'))
+	${1:data_out} <- ${2:data_in} %>% as.data.table() %>% split(by = c('${3:groupvars}'))
 	ggg <- gc()  ## garbage collection (silent)
 	
 	## prepare for parallelization
@@ -621,7 +621,7 @@ snippet prlll
 	clust <- makeCluster(getOption("cl.cores", num_cores_to_use))
 	
 	## PARALLELISM !!!
-	${1:data} <- parLapplyLB(clust, ${1:data}, function(df) {
+	${1:data_out} <- parLapplyLB(clust, ${1:data_out}, function(df) {
 		library(tidyverse)
 		library(lubridate)
 		
@@ -639,7 +639,7 @@ snippet prlll
 	stopCluster(clust)
 	
 	## merge results of the different cores
-	${1:data} <- ${1:data} %>% data.table::rbindlist()
+	${1:data_out} <- ${1:data_out} %>% data.table::rbindlist()
 
 # ------------------------------------------------------------
 # summaries
