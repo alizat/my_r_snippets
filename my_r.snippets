@@ -610,7 +610,7 @@ snippet numericInput
 # ------------------------------------------------------------
 
 snippet prlll
-	${1:data_out} <- ${2:data_in} %>% as.data.table() %>% split(by = c('${3:groupvars}'))
+	${1:data_out} <- ${2:data_in} %>% as.data.table() %>% split(by = c('${3:splitvars}'))
 	ggg <- gc()  ## garbage collection (silent)
 	
 	## prepare for parallelization
