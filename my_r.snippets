@@ -610,13 +610,27 @@ snippet numericInput
 # ------------------------------------------------------------
 
 snippet prlll
-	${1:data_out} <- ${2:data_in} %>% as.data.table() %>% split(by = c('${3:splitvars}'))
+	${1:data_out} <- ${2:data_in} %>% data.table::as.data.table()
+	ggg <- gc()  ## garbage collection (silent)
+	
+	split_with_these <- c('${3:splitvars}')
+	split_plan <- 
+		${1:data_out} %>% 
+		select(all_of(split_with_these)) %>% 
+		distinct() %>% 
+		mutate(grouping = sample(1000, nrow(.), replace = TRUE))
+	
+	${1:data_out} <- 
+		${1:data_out} %>% 
+		inner_join(split_plan, by = split_with_these)
+	
+	${1:data_out} <- ${1:data_out} %>% split(by = 'grouping')
 	ggg <- gc()  ## garbage collection (silent)
 	
 	## prepare for parallelization
 	library(parallel)
 	num_cores_total <- detectCores()
-	num_cores_to_use <- floor(num_cores_total * 0.75) - 1
+	num_cores_to_use <- min(floor(num_cores_total * 0.75) - 1, nrow(split_plan))
 	# print('# cores to use:' %>% paste(num_cores_to_use))
 	clust <- makeCluster(getOption("cl.cores", num_cores_to_use))
 	
@@ -633,13 +647,16 @@ snippet prlll
 	})
 	
 	## 10 seconds pause after above parallel computation
-	Sys.sleep(time = 10)
+	Sys.sleep(time = ${4:10})
 	
 	## clean up
 	stopCluster(clust)
 	
 	## merge results of the different cores
 	${1:data_out} <- ${1:data_out} %>% data.table::rbindlist()
+	
+	## remove 'grouping' field (if still exists)
+	${1:data_out} <- ${1:data_out} %>% select(-any_of('grouping'))
 
 # ------------------------------------------------------------
 # summaries
