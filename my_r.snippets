@@ -615,13 +615,21 @@ snippet radioButtons
 
 snippet datatable
 	display_me = ${1:data_df}
+	colnames(display_me) <- 
+		colnames(display_me) %>% 
+		str_split('_') %>% 
+		map_chr(~ .x %>% unlist() %>% paste(collapse = ' ')) %>% 
+		str_to_title()
 	display_me %>% 
 		datatable(
 			filter = 'top',
 			rownames = FALSE,
 			options = list(
 				dom = 'ltip',
-				columnDefs = list(list(width = paste0(100 / ncol(display_me), '%'), targets = '_all'))
+				columnDefs = list(
+					list(className = 'dt-center', targets = '_all'),
+					list(width = paste0(100 / ncol(display_me), '%'), targets = '_all')
+				)
 			)
 		) %>% 
 		formatStyle(1:ncol(display_me), lineHeight = '40%')
