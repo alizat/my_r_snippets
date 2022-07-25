@@ -295,6 +295,8 @@ snippet ie
 
 # ------------------------------------------------------------
 # ggplot2
+# the following snippets are intended to be used as follows:
+#   data %>% <snippet>
 # ------------------------------------------------------------
 
 snippet gg "ggplot generic"
@@ -582,7 +584,7 @@ snippet selectInput
 	selectInput(
 		inputId  = '${1:my_select_input}', 
 		label    = '${2:Select...}', 
-		choices  = c(${3:'choice 1', 'choice 2'}), 
+		choices  = c(${3:'choice 1', 'choice 2'}) %>% set_names(str_to_title(.)), 
 		selected = ${4:'choice 1'}, 
 		multiple = ${5:FALSE}
 	)
@@ -609,7 +611,7 @@ snippet radioButtons
 	radioButtons(
 		inputId  = '${1:my_numeric_input}', 
 		label    = '${2:Select...}', 
-		choices  = c(${3:'choice 1', 'choice 2'}), 
+		choices  = c(${3:'choice 1', 'choice 2'}) %>% set_names(str_to_title(.)), 
 		selected = ${4:'choice 1'}
 	)
 
@@ -620,6 +622,9 @@ snippet datatable
 		str_split('_') %>% 
 		map_chr(~ .x %>% unlist() %>% paste(collapse = ' ')) %>% 
 		str_to_title()
+	# display_me <- 
+	# 	display_me %>% 
+	# 	mutate_if(is.numeric, round, digits = 1)
 	display_me %>% 
 		datatable(
 			filter = 'top',
@@ -632,7 +637,8 @@ snippet datatable
 				)
 			)
 		) %>% 
-		formatStyle(1:ncol(display_me), lineHeight = '40%')
+		formatStyle(1:ncol(display_me), lineHeight = '40%') %>% 
+		formatRound(colnames(display_me)[display_me %>% map_lgl(is.numeric)], digits=1)
 
 # ------------------------------------------------------------
 # parallelism
