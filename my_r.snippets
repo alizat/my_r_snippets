@@ -226,27 +226,30 @@ snippet install_pkg_from_source "install package from local file"
 	install.packages(${1:path_to_file}, repos = NULL, type="source")
 
 snippet libs "my favorite libraries"
-	library(tidyverse)
-	library(lubridate)
-	library(plotly)
-	library(tictoc)
-	library(glue)
-	
-	options(dplyr.summarise.inform = FALSE)
+	suppressMessages({
+		library(tidyverse)
+		library(lubridate)
+		library(plotly)
+		library(tictoc)
+		library(glue)
+		
+		options(dplyr.summarise.inform = FALSE)
+	})
 
 snippet libs4shiny "libraries to use in shiny apps"
-	library(tidyverse)
-	library(lubridate)
-	library(plotly)
-	library(tictoc)
-	library(glue)
-	
-	library(shiny)
-	library(shinymanager)
-	library(leaflet)
-	library(DT)
-	
-	options(dplyr.summarise.inform = FALSE)
+	suppressMessages({
+		library(tidyverse)
+		library(lubridate)
+		library(plotly)
+		library(tictoc)
+		library(glue)
+		
+		library(shiny)
+		library(leaflet)
+		library(DT)
+		
+		options(dplyr.summarise.inform = FALSE)
+	})
 
 snippet tv "load tidyverse"
 	library(tidyverse)
@@ -378,11 +381,13 @@ snippet read_fst
 snippet xlsxread "read all sheets of an xlsx file into a list"
 	read_entire_xlsx <- function(xlsx_file) {
 	  all_sheets <- readxl::excel_sheets(xlsx_file)
-	  all_sheets %>% map(~ readxl::read_xlsx(xlsx_file, sheet = .x) %>% mutate_all(as.character)) %>% set_names(all_sheets)
+	  all_sheets <- 
+	  	all_sheets %>% 
+	  	map(~ readxl::read_xlsx(xlsx_file, sheet = .x) %>% mutate_all(as.character)) %>% 
+	  	set_names(all_sheets)
+	  if (length(all_sheets) == 1) all_sheets[[1]] else all_sheets
 	}
-	stuff <- read_entire_xlsx(${1:file})
-	if (length(stuff) == 1)
-		stuff <- stuff[[1]]
+	stuff <- read_entire_xlsx('${1:file}')
 
 snippet write_csv
 	write_csv('${1:filename}')
