@@ -352,8 +352,13 @@ snippet corrfunnel "correlation funnel visualization"
 		correlate(${2:Species__setosa}) %>%
 		plot_correlation_funnel(interactive = TRUE, alpha = 0.7)
 
+snippet saveplotly
+	as_widget() %>% htmlwidgets::saveWidget("${1:filename.html}")
+
 # ------------------------------------------------------------
 # wrangling
+# the following snippets are intended to be used as follows:
+#   data %>% <snippet>
 # ------------------------------------------------------------
 
 snippet pivot_wider
@@ -364,6 +369,8 @@ snippet pivot_longer
 
 # ------------------------------------------------------------
 # read/write
+# the following snippets are intended to be used as follows:
+#   data %>% <snippet>
 # ------------------------------------------------------------
 
 snippet read_csv
