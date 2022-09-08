@@ -147,6 +147,7 @@ snippet install.packages "packages to install in a new R environment"
 	    "shiny",
 	    "shinydashboard",
 	    "shinymanager",
+	    "shinyjs",
 	    "flexdashboard",
 	    "bslib", 
 	    "showtext", 
@@ -455,15 +456,11 @@ snippet xgbmodel_reg
 	library(pROC)
 	
 	set.seed(1023154)
-	dta_to_build_model_with <- 1:nrow(dta_to_build_model_with)
-	df_train <- dta_to_build_model_with %>% dplyr::sample_n(floor(0.6 * nrow(.)))
-	df_val   <- dta_to_build_model_with %>% dplyr::setdiff(df_train) %>% dplyr::sample_n(floor(0.5 * nrow(.)))
-	df_test  <- dta_to_build_model_with %>% dplyr::setdiff(df_train) %>% dplyr::setdiff(df_val)
-	
-	dta_to_build_model_with <- dta_to_build_model_with %>% select(-indx)
-	df_train <- df_train %>% select(-indx)
-	df_val <- df_val %>% select(-indx)
-	df_test <- df_test %>% select(-indx)
+	num_rows <- nrow(dta_to_build_model_with)
+	randomized <- sample(num_rows)
+	df_train <- dta_to_build_model_with[randomized[1:floor(0.6*num_rows)],]
+	df_val   <- dta_to_build_model_with[randomized[(floor(0.6*num_rows) + 1):floor(0.8*num_rows)],]
+	df_test  <- dta_to_build_model_with[randomized[(floor(0.8*num_rows) + 1):num_rows],]
 	
 	hypergrid <- expand_grid(eta       = seq(0.1, 0.9, 0.2),
 	                         max_depth = seq(2, 8, 2),
