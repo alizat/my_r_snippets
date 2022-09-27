@@ -589,6 +589,19 @@ snippet shinyauth "add authentication to a shiny app"
 	
 	shinyApp(ui = ui, server = server)
 
+snippet shinymodule "add authentication to a shiny app"
+	${1}UI <- function(id) {
+		tagList(
+			${2}
+		)
+	}
+	
+	${1}Server <- function(id) {
+		moduleServer(id, function(input, output, session) {
+			${3}
+		})
+	}
+
 snippet selectInput
 	selectInput(
 		inputId  = '${1:my_select_input}', 
