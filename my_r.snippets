@@ -1,5 +1,3 @@
-
-
 # ------------------------------------------------------------
 # standard rstudio snippets
 # ------------------------------------------------------------
@@ -294,7 +292,13 @@ snippet prettydate
 	strftime(Sys.time(), "%A, %b %d, %Y")
 
 snippet hdr
-	# ---- ${1:header} ----
+	## ---- ${1:header} ----
+
+snippet subhdr
+	#### ---- ${1:subhdr} ----
+
+snippet subsubhdr
+	######## ---- ${1:subsubhdr} ----
 
 snippet ie
 	if (${1:cond}) ${2:true} else ${3:false}
@@ -816,4 +820,3 @@ snippet grp_smr
 	  group_by(${2:grpvar}) %>% 
 	  summarise(${3:across(everything(), mean)}) %>% 
 	  ungroup()
-
