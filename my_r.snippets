@@ -382,10 +382,10 @@ snippet pivot_longer
 # ------------------------------------------------------------
 
 snippet read_csv
-	read_csv('${1:filename}', show_col_types = FALSE${2:, col_types = cols(.default = 'c')})
+	read_csv('${1:filename}', col_types = cols(${2:.default = 'c'}))
 
 snippet read_tsv
-	read_tsv('${1:filename}', show_col_types = FALSE${2:, col_types = cols(.default = 'c')})
+	read_tsv('${1:filename}', col_types = cols(${2:.default = 'c'}))
 
 snippet read_delim
 	read_delim('${1:filename}', delim = '${|}', show_col_types = FALSE${3:, col_types = cols(.default = 'c')})
