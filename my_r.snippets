@@ -221,6 +221,9 @@ snippet install.packages "packages to install in a new R environment"
 	  # repo = "http://cran.us.r-project.org"
 	)
 
+snippet installed.packages "list installed packages"
+	unname(installed.packages()[,1])
+
 snippet install_version "install specific version of a library"
 	devtools::install_version(${1:ggplot2} version = ${2:0.9.1}, repos = "http://cran.us.r-project.org")
 
