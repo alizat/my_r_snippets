@@ -311,6 +311,12 @@ snippet subsubhdr
 snippet ie
 	if (${1:cond}) ${2:true} else ${3:false}
 
+snippet rscript "run R script from terminal"
+	Rscript ${1:script.R}
+
+snippet rcmd "run R command from terminal"
+	Rscript -e '${1:print('Hello World')}'
+
 # ------------------------------------------------------------
 # ggplot2
 # the following snippets are intended to be used as follows:
