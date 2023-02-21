@@ -335,6 +335,9 @@ snippet gl "ggplot line"
 snippet gp "ggplot point"
 	ggplot(aes(${2:x}, ${3:y})) + geom_point()${0}
 
+snippet gh "ggplot histogram"
+	ggplot(aes(${2:x})) + geom_histogram()${0}
+
 snippet gb "ggplot bar"
 	count(${2:var}) %>% 
 	  ggplot(aes(${2:var}, n)) + 
