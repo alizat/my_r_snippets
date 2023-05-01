@@ -91,15 +91,15 @@ snippet ts
 
 snippet shinyapp
 	library(shiny)
-	
+
 	ui <- fluidPage(
 	  ${0}
 	)
-	
+
 	server <- function(input, output, session) {
-	  
+
 	}
-	
+
 	shinyApp(ui, server)
 
 snippet shinymod
@@ -109,7 +109,7 @@ snippet shinymod
 			${2}
 		)
 	}
-	
+
 	${1:name}Server <- function(id) {
 		moduleServer(id, function(input, output, session) {
 			${3}
@@ -141,13 +141,13 @@ snippet install.packages "packages to install in a new R environment"
 	    "glue",
 	    "fst",
 	    "arrow",
-	    
+
 	    # ## DB
 	    # "odbc",
 	    # "DBI",
 	    # "RMySQL",
 	    # "ROracle",
-	    
+
 	    ## shiny
 	    "shiny",
 	    "shinydashboard",
@@ -155,11 +155,11 @@ snippet install.packages "packages to install in a new R environment"
 	    "shinyjs",
 	    "flexdashboard",
 	    "blogdown",
-	    "bslib", 
-	    "showtext", 
+	    "bslib",
+	    "showtext",
 	    "thematic",
 	    "DT",
-	    
+
 	    ## maps
 	    "leaflet",
 	    "geosphere",
@@ -168,7 +168,7 @@ snippet install.packages "packages to install in a new R environment"
 	    "geonames",
 	    "osmdata",
 	    "sf",
-	    
+
 	    ## data viz
 	    "scales",
 	    "plotly",
@@ -192,7 +192,7 @@ snippet install.packages "packages to install in a new R environment"
 	    "parcats",
 	    "DiagrammeR",
 	    "wordcloud",
-	    
+
 	    ## machine learning
 	    "caret",
 	    "mlr",
@@ -202,27 +202,27 @@ snippet install.packages "packages to install in a new R environment"
 	    "randomForest",
 	    "kernlab",
 	    "e1071",
-	    "party", 
+	    "party",
 	    "rpart",
 	    "nnet",
 	    "forecast",
 	    "tseries",
-	    
+
 	    ## association analysis
 	    "arules",
 	    "arulesViz",
-	    "arulesCBA", 
-	    "arulesNBMiner", 
+	    "arulesCBA",
+	    "arulesNBMiner",
 	    "arulesSequences",
-	    
+
 	    # ## rfm
 	    # "rfm",
 	    # "fuzzyjoin",
-	    
+
 	    ## software engineering
 	    "httr",
 	    "jsonlite",
-	    
+
 	    ## miscellaneous
 	    "tictoc",
 	    "styler"
@@ -248,7 +248,7 @@ snippet libs "my favorite libraries"
 		library(plotly)
 		library(tictoc)
 		library(glue)
-		
+
 		options(dplyr.summarise.inform = FALSE)
 	})
 
@@ -259,11 +259,11 @@ snippet libs4shiny "libraries to use in shiny apps"
 		library(plotly)
 		library(tictoc)
 		library(glue)
-		
+
 		library(shiny)
 		library(leaflet)
 		library(DT)
-		
+
 		options(dplyr.summarise.inform = FALSE)
 	})
 
@@ -343,12 +343,12 @@ snippet gh "ggplot histogram"
 	ggplot(aes(${2:x})) + geom_histogram()${0}
 
 snippet gb "ggplot bar"
-	count(${2:var}) %>% 
-	  ggplot(aes(${2:var}, n)) + 
+	count(${2:var}) %>%
+	  ggplot(aes(${2:var}, n)) +
 	  geom_bar(stat = 'identity')
 
 snippet gbpoint "ggplot bar chart with points"
-	rincome_summary <- 
+	rincome_summary <-
 		gss_cat %>%
 		group_by(rincome) %>%
 		summarise(
@@ -383,19 +383,19 @@ snippet ggel "element_line"
 	element_line($0)
 
 snippet patchwork_examples
-	p1 <- 
-		ggplot(mpg) + 
+	p1 <-
+		ggplot(mpg) +
 		geom_point(aes(x = displ, y = hwy))
-	p2 <- 
-		ggplot(mpg) + 
-		geom_bar(aes(x = as.character(year), fill = drv), position = "dodge") + 
+	p2 <-
+		ggplot(mpg) +
+		geom_bar(aes(x = as.character(year), fill = drv), position = "dodge") +
 		labs(x = "year")
-	p3 <- 
-		ggplot(mpg) + 
-		geom_density(aes(x = hwy, fill = drv), colour = NA) + 
+	p3 <-
+		ggplot(mpg) +
+		geom_density(aes(x = hwy, fill = drv), colour = NA) +
 		facet_grid(rows = vars(drv))
-	p4 <- 
-		ggplot(mpg) + 
+	p4 <-
+		ggplot(mpg) +
 		stat_summary(aes(x = drv, y = hwy, fill = drv), geom = "col", fun.data = mean_se) +
 		stat_summary(aes(x = drv, y = hwy), geom = "errorbar", fun.data = mean_se, width = 0.5)
 	library(patchwork)
@@ -454,9 +454,9 @@ snippet read_fst
 snippet xlsxread "read all sheets of an xlsx file into a list"
 	read_entire_xlsx <- function(xlsx_file) {
 	  all_sheets <- readxl::excel_sheets(xlsx_file)
-	  all_sheets <- 
-	  	all_sheets %>% 
-	  	map(~ readxl::read_xlsx(xlsx_file, sheet = .x) %>% mutate_all(as.character)) %>% 
+	  all_sheets <-
+	  	all_sheets %>%
+	  	map(~ readxl::read_xlsx(xlsx_file, sheet = .x) %>% mutate_all(as.character)) %>%
 	  	set_names(all_sheets)
 	  if (length(all_sheets) == 1) all_sheets[[1]] else all_sheets
 	}
@@ -484,7 +484,7 @@ snippet arabiclocaleparam "locale parameters in read_* functions of readr packag
 snippet lsobjects "get sizes of variables in environment"
 	.ls.objects <- function (pos = 1, pattern, order.by = "Size", decreasing=TRUE, head = TRUE, n = 10) {
 	    # based on postings by Petr Pikal and David Hinds to the r-help list in 2004
-	    # modified by: Dirk Eddelbuettel (http://stackoverflow.com/questions/1358003/tricks-to-manage-the-available-memory-in-an-r-session) 
+	    # modified by: Dirk Eddelbuettel (http://stackoverflow.com/questions/1358003/tricks-to-manage-the-available-memory-in-an-r-session)
 	    # I then gave it a few tweaks (show size as megabytes and use defaults that I like)
 	    # a data frame of the objects and their associated storage needs.
 	    napply <- function(names, fn) sapply(names, function(x)
@@ -516,22 +516,22 @@ snippet object_size "get size of specific variables in environment"
 snippet xgbmodel_reg
 	dta_to_build_model_with <- ${1:data}
 	target_variable <- '${2:targetvar}'
-	
+
 	library(xgboost)
 	library(pROC)
-	
+
 	set.seed(1023154)
 	num_rows <- nrow(dta_to_build_model_with)
 	randomized <- sample(num_rows)
 	df_train <- dta_to_build_model_with[randomized[1:floor(0.6*num_rows)],]
 	df_val   <- dta_to_build_model_with[randomized[(floor(0.6*num_rows) + 1):floor(0.8*num_rows)],]
 	df_test  <- dta_to_build_model_with[randomized[(floor(0.8*num_rows) + 1):num_rows],]
-	
+
 	hypergrid <- expand_grid(eta       = seq(0.1, 0.9, 0.2),
 	                         max_depth = seq(2, 8, 2),
-	                         nrounds   = seq(10, 50, 10), 
-	                         auc       = 0, 
-	                         avg_error = 0, 
+	                         nrounds   = seq(10, 50, 10),
+	                         auc       = 0,
+	                         avg_error = 0,
 	                         med_error = 0)
 	print(glue('Hyperparameter tuning begins...'))
 	best_val_AUC         <- -1
@@ -546,37 +546,37 @@ snippet xgbmodel_reg
 	                   # eval_metric = 'auc',  ## uncomment this line if classification
 	                   verbose   = 0)
 	    predictions <- predict(xgb, data.matrix(df_val %>% select(-all_of(target_variable))))
-	    
+
 	    ## compute area under ROC curve
 	    actual <- df_val[[target_variable]]
 	    suppressMessages({ hypergrid[['auc']][i] <- auc(roc(actual, predictions)) %>% as.numeric() })
-	    
+
 	    print_me <- glue("[{now()}]")
 	    print_me <- glue("[{, print_me}eta={hypergrid[['eta']][i]}")
 	    print_me <- glue("[{, print_me}max_depth={hypergrid[['max_depth']][i]}")
 	    print_me <- glue("[{, print_me}nrounds={hypergrid[['nrounds']][i]}")
 	    print_me <- glue("[{, print_me}auc={hypergrid[['auc']][i]}")
-	    
+
 	    ## regression only
 	    hypergrid[['avg_error']][i] <-   mean(abs(predictions - df_val[[target_variable]]) / df_val[[target_variable]], na.rm = TRUE)
 	    hypergrid[['med_error']][i] <- median(abs(predictions - df_val[[target_variable]]) / df_val[[target_variable]], na.rm = TRUE)
 	    print_me <- glue("[{, print_me}avg_error={round(hypergrid[['avg_error']][i] * 100, 1)}%")
 	    print_me <- glue("[{, print_me}med_error={round(hypergrid[['med_error']][i] * 100, 1)}%")
-	    
+
 	    print(print_me)
-	    
+
 	    if (best_val_AUC < hypergrid[['auc']][i]) {
 	      best_val_AUC         <- hypergrid[['auc']][i]
 	      best_val_predictions <- val_predictions
 	    }
 	}
 	print(glue('Hyperparameter tuning ends...'))
-	best_params <- 
-	    hypergrid %>% 
-	    arrange(desc(auc)) %>% 
-	    head(1) %>% 
+	best_params <-
+	    hypergrid %>%
+	    arrange(desc(auc)) %>%
+	    head(1) %>%
 	    as.list()
-	
+
 	print(glue('Prediciting on test set...'))
 	xgb <- xgboost(data      = df_train %>% rbind(df_val) %>% select(-all_of(target_variable)) %>% data.matrix,
 	               label     = (df_train %>% rbind(df_val))[[target_variable]],
@@ -587,40 +587,40 @@ snippet xgbmodel_reg
 	               # eval_metric = 'auc',  ## uncomment this line if classification
 	               verbose   = 0)
 	predictions <- predict(xgb, data.matrix(df_test %>% select(-all_of(target_variable))))
-	
+
 	## compute area under ROC curve
 	actual <- df_val[[target_variable]]
 	suppressMessages({ hypergrid[['auc']][i] <- auc(roc(actual, predictions)) %>% as.numeric() })
-	
+
 	print(glue("    eta       = {best_params[['eta']][i]}"))
 	print(glue("    max_depth = {best_params[['max_depth']][i]}"))
 	print(glue("    nrounds   = {best_params[['nrounds']][i]}"))
 	print(glue("    auc       = {best_params[['auc']][i]}"))
-	
+
 	## regression only
 	avg_error_test <-   mean(abs(predictions - df_test[[target_variable]]) / df_test[[target_variable]], na.rm = TRUE)
 	med_error_test <- median(abs(predictions - df_test[[target_variable]]) / df_test[[target_variable]], na.rm = TRUE)
 	print(glue("    avg_error = {best_params[['avg_error']][i]}%"))
 	print(glue("    med_error = {best_params[['med_error']][i]}%"))
-	
+
 	## append details of model training
 	stuff <- list()
 	stuff[['mdl']] <- xgb
 	stuff[['hypergrid']] <- hypergrid
 	stuff[['best_params']] <- best_params
-	stuff[['val_pred_vs_actual']] <- 
+	stuff[['val_pred_vs_actual']] <-
 	    tibble(pred = best_val_predictions,
 	           actual = df_val[[target_variable]])
 	histogram_plotter <- function(pred_vs_actual) {
-	  pred_vs_actual %>% 
-	    ggplot(aes(x = pred, fill = actual_aux)) + 
-	    geom_histogram(binwidth = 0.01, 
-	                   position = 'identity', 
+	  pred_vs_actual %>%
+	    ggplot(aes(x = pred, fill = actual_aux)) +
+	    geom_histogram(binwidth = 0.01,
+	                   position = 'identity',
 	                   alpha = 0.5)
 	}
 	stuff[['val_histogram_plot']] <- histogram_plotter(stuff)
 	# stuff[['val_ct']] <- coverager(preds = best_val_predictions, actual_binary = df_val[[target_variable]])
-	
+
 	# ## append the inputs that were given to this function
 	# stuff[['train_set']]               <- train_set
 	# stuff[['validation_set']]          <- validation_set
@@ -635,71 +635,71 @@ snippet xgbmodel_reg
 snippet shinyauth "add authentication to a shiny app"
 	library(shiny)
 	${1:library(shinymanager)}
-	
+
 	${2:credentials <-
 			data.frame(user = c("shiny", "shinymanager"),
 					   password = c("azerty", "12345"),
 					   admin = c(T, F),
 					   stringsAsFactors = FALSE)}
-	
+
 	ui <- fluidPage()
-	
+
 	${3:ui <- secure_app(ui, enable_admin = T)}
-	
+
 	server <- function(input, output) {
-	
+
 		${4:secure_server(check_credentials = check_credentials(credentials))}
-		
+
 	}
-	
+
 	shinyApp(ui = ui, server = server)
 
 snippet selectInput
 	selectInput(
-		inputId  = '${1:my_select_input}', 
-		label    = '${2:Select...}', 
-		choices  = c(${3:'choice 1', 'choice 2'}) %>% set_names(str_to_title(.)), 
-		selected = ${4:'choice 1'}, 
+		inputId  = '${1:my_select_input}',
+		label    = '${2:Select...}',
+		choices  = c(${3:'choice 1', 'choice 2'}) %>% set_names(str_to_title(.)),
+		selected = ${4:'choice 1'},
 		multiple = ${5:FALSE}
 	)
 
 snippet sliderInput
 	sliderInput(
-		inputId = '${1:my_slider_input}', 
-		label   = '${2:Select...}', 
-		min     = ${3:0}, 
-		max     = ${4:100}, 
+		inputId = '${1:my_slider_input}',
+		label   = '${2:Select...}',
+		min     = ${3:0},
+		max     = ${4:100},
 		value   = ${5:50}
 	)
 
 snippet numericInput
 	numericInput(
-		inputId = '${1:my_numeric_input}', 
-		label   = '${2:Select...}', 
-		min     = ${3:0}, 
-		max     = ${4:100}, 
+		inputId = '${1:my_numeric_input}',
+		label   = '${2:Select...}',
+		min     = ${3:0},
+		max     = ${4:100},
 		value   = ${5:50}
 	)
 
 snippet radioButtons
 	radioButtons(
-		inputId  = '${1:my_numeric_input}', 
-		label    = '${2:Select...}', 
-		choices  = c(${3:'choice 1', 'choice 2'}) %>% set_names(str_to_title(.)), 
+		inputId  = '${1:my_numeric_input}',
+		label    = '${2:Select...}',
+		choices  = c(${3:'choice 1', 'choice 2'}) %>% set_names(str_to_title(.)),
 		selected = ${4:'choice 1'}
 	)
 
 snippet datatable
 	display_me = ${1:data_df}
-	colnames(display_me) <- 
-		colnames(display_me) %>% 
-		str_split('_') %>% 
-		map_chr(~ .x %>% unlist() %>% paste(collapse = ' ')) %>% 
+	colnames(display_me) <-
+		colnames(display_me) %>%
+		str_split('_') %>%
+		map_chr(~ .x %>% unlist() %>% paste(collapse = ' ')) %>%
 		str_to_title()
-	# display_me <- 
-	# 	display_me %>% 
+	# display_me <-
+	# 	display_me %>%
 	# 	mutate_if(is.numeric, round, digits = 1)
-	display_me %>% 
+	display_me %>%
 		datatable(
 			filter = 'top',
 			rownames = FALSE,
@@ -710,8 +710,8 @@ snippet datatable
 					list(width = paste0(100 / ncol(display_me), '%'), targets = '_all')
 				)
 			)
-		) %>% 
-		formatStyle(1:ncol(display_me), lineHeight = '40%') %>% 
+		) %>%
+		formatStyle(1:ncol(display_me), lineHeight = '40%') %>%
 		formatRound(colnames(display_me)[display_me %>% map_lgl(is.numeric)], digits=1)
 
 # ------------------------------------------------------------
@@ -721,49 +721,49 @@ snippet datatable
 snippet prlll
 	${1:data_out} <- ${2:data_in} %>% data.table::as.data.table()
 	ggg <- gc()  ## garbage collection (silent)
-	
+
 	split_with_these <- c('${3:splitvars}')
-	split_plan <- 
-		${1:data_out} %>% 
-		select(all_of(split_with_these)) %>% 
-		distinct() %>% 
+	split_plan <-
+		${1:data_out} %>%
+		select(all_of(split_with_these)) %>%
+		distinct() %>%
 		mutate(grouping = sample(1000, nrow(.), replace = TRUE))
-	
-	${1:data_out} <- 
-		${1:data_out} %>% 
+
+	${1:data_out} <-
+		${1:data_out} %>%
 		inner_join(split_plan, by = split_with_these)
-	
+
 	${1:data_out} <- ${1:data_out} %>% split(by = 'grouping')
 	ggg <- gc()  ## garbage collection (silent)
-	
+
 	## prepare for parallelization
 	library(parallel)
 	num_cores_total <- detectCores()
 	num_cores_to_use <- min(floor(num_cores_total * 0.75) - 1, nrow(split_plan))
 	# print('# cores to use:' %>% paste(num_cores_to_use))
 	clust <- makeCluster(getOption("cl.cores", num_cores_to_use))
-	
+
 	## PARALLELISM !!!
 	${1:data_out} <- parLapplyLB(clust, ${1:data_out}, function(df) {
 		library(tidyverse)
 		library(lubridate)
-		
+
 		# ## stuff you wanna do!
 		# df <- df %>% <do something here!!!>
-		
+
 		## return processed result
 		df
 	})
-	
+
 	## 10 seconds pause after above parallel computation
 	Sys.sleep(time = ${4:10})
-	
+
 	## clean up
 	stopCluster(clust)
-	
+
 	## merge results of the different cores
 	${1:data_out} <- ${1:data_out} %>% data.table::rbindlist()
-	
+
 	## remove 'grouping' field (if still exists)
 	${1:data_out} <- ${1:data_out} %>% select(-any_of('grouping'))
 
@@ -772,34 +772,34 @@ snippet prlll
 # ------------------------------------------------------------
 
 snippet skm
-	skimr::skim_without_charts(${1:dplyr::storms}) %>% 
+	skimr::skim_without_charts(${1:dplyr::storms}) %>%
 	#arrange(n_missing, character.n_unique, factor.n_unique, sd)
 	do({
 	  df <- .
-	  
+
 	  df <- df %>% arrange(n_missing)
-	  
+
 		classes <- df %>% sapply(class) %>% unlist() %>% unique()
-		
+
 		if (any(classes %in% c('character','factor','ordered','Date','POSIXct','POSIXt'))) {
 			arrange_with_these <- colnames(df)[colnames(df) %>% str_detect('unique')]
 			df <- df %>% arrange(across(arrange_with_these))
 		}
-			
+
 		if (any(classes %in% c('numeric','integer','double'))) {
 			arrange_with_these <- colnames(df)[colnames(df) %>% str_detect('sd')]
 			df <- df %>% arrange(across(arrange_with_these))
 		}
-		
+
 		df
 	})
 
 snippet grp_cnt
 	dta_to_count <- ${1:data}
 	grpvars <- c('${2:groupvars}')
-	dta_to_count %>% 
-		group_by_at(all_of(grpvars)) %>% 
-		summarise(n = n(), .groups = 'drop_last') %>% 
+	dta_to_count %>%
+		group_by_at(all_of(grpvars)) %>%
+		summarise(n = n(), .groups = 'drop_last') %>%
 		ungroup()
 
 snippet grp_qtiles
@@ -812,35 +812,35 @@ snippet grp_qtiles
 	p75  <- function(x) {quantile(x, probs = 0.75, na.rm = TRUE)}
 	p95  <- function(x) {quantile(x, probs = 0.95, na.rm = TRUE)}
 	p100 <- function(x) {max(x, na.rm = TRUE)}
-	ps <- list(MIN = p0, 
-	           p5  = p5, 
-	           p25 = p25, 
-	           p50 = p50, 
-	           p75 = p75, 
-	           p95 = p95, 
-	           MAX = p100, 
+	ps <- list(MIN = p0,
+	           p5  = p5,
+	           p25 = p25,
+	           p50 = p50,
+	           p75 = p75,
+	           p95 = p95,
+	           MAX = p100,
 	           n = length)
 	display_me <-
-		dta_to_quantile %>% 
-		mutate(super_unique_column = 1) %>% 
-		# lazy_dt() %>% 
-		group_by(across(all_of(grpvars))) %>% 
-		summarise_if(is.numeric, .funs = ps) %>% 
-		ungroup() %>% 
-		select(-starts_with('super_unique_column')) %>% 
-		# as_tibble() %>% 
+		dta_to_quantile %>%
+		mutate(super_unique_column = 1) %>%
+		# lazy_dt() %>%
+		group_by(across(all_of(grpvars))) %>%
+		summarise_if(is.numeric, .funs = ps) %>%
+		ungroup() %>%
+		select(-starts_with('super_unique_column')) %>%
+		# as_tibble() %>%
 	    pivot_longer(cols = (length(grpvars) + 1):ncol(.),
 	                 names_to = c('feature', 'qtile'),
-	                 names_pattern = '(.*)_(.*)', 
-	                 values_to = 'val') %>% 
+	                 names_pattern = '(.*)_(.*)',
+	                 values_to = 'val') %>%
 	    mutate(qtile = qtile %>% factor(levels = names(ps))) %>%
 	    pivot_wider(names_from = feature, values_from = val)
-	silence <- 
-	    display_me %>% 
-	    group_by_at(all_of(grpvars)) %>% 
+	silence <-
+	    display_me %>%
+	    group_by_at(all_of(grpvars)) %>%
 	    do({
 	        my_stuff <- .
-	        
+
 	        print(glue(''))
 	        for (i in 1:length(grpvars)) {
 	            print(glue('{grpvars[i]} = {my_stuff %>% select(all_of(grpvars[i])) %>% pull() %>% unique()}'))
@@ -848,20 +848,20 @@ snippet grp_qtiles
 	        print(glue('Number of Observations = {my_stuff %>% filter(qtile == "n") %>% select(-qtile, -all_of(grpvars)) %>% unlist() %>% tail(1)}'))
 	        my_stuff %>% filter(qtile != 'n') %>% print()
 	        print(glue(''))
-	        
+
 	        my_stuff
-	    }) %>% 
+	    }) %>%
 	    ungroup()
 
 snippet grp_summary
 	dta_to_summarize <- ${1:data}
 	grpvars <- c('${2:groupvars}')
-	silence <- 
-	    dta_to_summarize %>% 
-	    group_by(across(all_of(grpvars))) %>% 
+	silence <-
+	    dta_to_summarize %>%
+	    group_by(across(all_of(grpvars))) %>%
 	    do({
 	        my_stuff <- .
-	        
+
 	        print(glue(''))
 	        for (i in 1:length(grpvars)) {
 	            print(glue('{grpvars[i]} = {my_stuff %>% select(all_of(grpvars[i])) %>% pull() %>% unique()}'))
@@ -869,13 +869,13 @@ snippet grp_summary
 	        print(glue('Number of Observations = {my_stuff %>% nrow()}'))
 	        print(my_stuff %>% select(-all_of(grpvars)) %>% summary())
 	        print(glue(''))
-	        
+
 	        my_stuff
-	    }) %>% 
+	    }) %>%
 	    ungroup()
 
 snippet grp_smr
-	${1:data} %>% 
-	  group_by(${2:grpvar}) %>% 
-	  summarise(${3:across(everything(), mean)}) %>% 
+	${1:data} %>%
+	  group_by(${2:grpvar}) %>%
+	  summarise(${3:across(everything(), mean)}) %>%
 	  ungroup()
