@@ -413,6 +413,10 @@ snippet patchwork_examples
 snippet corrfunnel "correlation funnel visualization"
 	library(correlationfunnel)
 	${1:iris} %>%
+		{.[, colSums(is.na(.)) / num_rows < 0.95]} %>%
+		mutate_if(is.character, replace_na, replace = 'NA') %>%
+		mutate_if(is.numeric,   replace_na, replace = -Inf) %>%
+		select(-contains('date')) %>%
 		drop_na() %>%
 		binarize(n_bins = 6) %>%
 		correlate(${2:Species__setosa}) %>%
