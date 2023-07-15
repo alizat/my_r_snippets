@@ -463,7 +463,8 @@ snippet pivot_longer
 # ------------------------------------------------------------
 
 snippet read_csv
-	read_csv('${1:filename}', col_types = cols(${2:.default = 'c'}), na = ${3:c('', 'NULL', 'N/A')})
+	read_csv('${1:filename}', col_types = cols(${2:.default = 'c'}), na = ${3:c('', 'NULL', 'N/A')}) %>%
+	mutate_if(is.character, str_squish)
 
 snippet read_tsv
 	read_tsv('${1:filename}', col_types = cols(${2:.default = 'c'}))
