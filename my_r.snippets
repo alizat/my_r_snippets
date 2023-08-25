@@ -142,6 +142,7 @@ snippet install.packages "packages to install in a new R environment"
 	    "fst",
 	    "arrow",
 	    "stringdist",
+	    "pracma",
 
 	    # ## DB
 	    # "odbc",
@@ -494,6 +495,22 @@ snippet write_fst
 
 snippet write_xlsx
 	writexl::write_xlsx('${1:filename}')
+
+# ------------------------------------------------------------
+# databases
+# ------------------------------------------------------------
+
+
+
+# ------------------------------------------------------------
+# matrix flipping
+# ------------------------------------------------------------
+
+snippet flipud "flip a matrix upside down"
+	pracma::flipud(M)
+
+snippet flipud "flip a matrix left right"
+	pracma::fliplr(M)
 
 # ------------------------------------------------------------
 # environment
