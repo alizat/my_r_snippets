@@ -503,14 +503,20 @@ snippet write_xlsx
 
 
 # ------------------------------------------------------------
-# matrix flipping
+# flipping/shifting of matrices & vectors
 # ------------------------------------------------------------
 
 snippet flipud "flip a matrix upside down"
-	pracma::flipud(M)
+	pracma::flipud(${1:M})
 
-snippet flipud "flip a matrix left right"
-	pracma::fliplr(M)
+snippet fliplr "flip a matrix left right"
+	pracma::fliplr(${1:M})
+
+snippet rev "reverse order of a vector"
+	rev(${1:V})
+
+snippet circshift "shift a matrix/vector"
+	pracma::circshift(${1:M}, c(${2:rr}, ${3:cc}))
 
 # ------------------------------------------------------------
 # environment
