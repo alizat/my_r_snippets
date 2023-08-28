@@ -344,6 +344,19 @@ snippet rscript "run R script from terminal"
 snippet rcmd "run R command from terminal"
 	Rscript -e '${1:print('Hello World')}'
 
+snippet tryc "try catch finally"
+	${1:variable} <- tryCatch({
+		${2}
+	}, warning = function(w) {
+		message(sprintf("Warning in %s: %s", deparse(w[["call"]]), w[["message"]]))
+		${3}
+	}, error = function(e) {
+		message(sprintf("Error in %s: %s", deparse(e[["call"]]), e[["message"]]))
+		${4}
+	}, finally = {
+		${5}
+	})
+
 # ------------------------------------------------------------
 # ggplot2
 # the following snippets are intended to be used as follows:
