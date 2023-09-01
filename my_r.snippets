@@ -319,6 +319,10 @@ snippet op:notnullish
 	# use y if x is not null(ish) (otherwise NULL)
 	`%??%` <- function(x, y) if (!is.null(x) && x != "") y
 
+snippet op:equalsna
+	# equality with NAs: matching values and corresponding NAs return TRUE
+	`%==%` <- function(a, b) if_else(a == b | (is.na(a) & is.na(b)),  TRUE, FALSE) %>% replace_na(FALSE)
+
 # ------------------------------------------------------------
 # general
 # ------------------------------------------------------------
