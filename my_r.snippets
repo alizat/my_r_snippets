@@ -474,6 +474,12 @@ snippet pivot_wider
 snippet pivot_longer
 	pivot_longer(cols = ${1:my_cols}, names_to = '${2:names_col}', values_to = '${3:values_col}')
 
+snippet duplicate_rows
+	{which(duplicated(.) |  duplicated(., fromLast = TRUE))}
+
+snippet unique_rows
+	{which(duplicated(.) |  duplicated(., fromLast = TRUE))} %>% {dplyr::setdiff(1:nrow(mydf), .)}
+
 # ------------------------------------------------------------
 # read/write
 # the following snippets are intended to be used as follows:
