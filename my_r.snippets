@@ -775,11 +775,27 @@ snippet datatable
 		datatable(
 			filter = 'top',
 			rownames = FALSE,
+			extensions = 'Buttons',
 			options = list(
-				dom = 'ltip',
+				dom = 'ltipB',
+				pageLength = 10,
+
+				# enable horizontal scroll
+				autoWidth = TRUE,
+				scrollX = TRUE,
+
+				# column centering/sizing
 				columnDefs = list(
 					list(className = 'dt-center', targets = '_all'),
 					list(width = paste0(100 / ncol(display_me), '%'), targets = '_all')
+					#list(width = '120px', targets = c(4,5))  # columns 4 & 5 to be 120 pixels wide
+				),
+
+				# export buttons
+				buttons = list(
+					list(extend = 'copy',  title = NULL),
+					list(extend = 'csv',   filename = glue('exported_data_{today() %>% str_replace_all("-", "_")}')),
+					list(extend = 'excel', filename = glue('exported_data_{today() %>% str_replace_all("-", "_")}'))
 				)
 			)
 		) %>%
