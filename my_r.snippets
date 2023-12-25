@@ -585,6 +585,9 @@ snippet object_size "get size of specific variables in environment"
 # machine learning
 # ------------------------------------------------------------
 
+snippet auc
+	suppressMessages({ auc(roc(${1:actual}, ${1:pred})) %>% as.numeric() %>% print() })
+
 snippet xgbmodel_reg
 	dta_to_build_model_with <- ${1:data}
 	target_variable <- '${2:targetvar}'
