@@ -125,6 +125,14 @@ snippet install.packages "packages to install in a new R environment"
 	  c(
 	    ## data structures/wrangling/read/write/analysis
 	    "tidyverse",
+	    #"tibble",
+	    #"dplyr",
+	    #"tidyr",
+	    #"readr",
+	    #"ggplot2",
+	    #"purrr",
+	    #"stringr",
+	    #"forcats",
 	    "lubridate",
 	    "rmarkdown",
 	    "data.table",
@@ -276,7 +284,15 @@ snippet libs "my favorite libraries"
 
 snippet libs4shiny "libraries to use in shiny apps"
 	suppressMessages({
-		library(tidyverse)
+		library(tibble)
+		library(dplyr)
+		library(tidyr)
+		library(readr)
+		library(ggplot2)
+		library(purrr)
+		library(stringr)
+		library(forcats)
+
 		library(lubridate)
 		library(plotly)
 		library(tictoc)
