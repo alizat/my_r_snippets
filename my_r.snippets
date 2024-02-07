@@ -467,6 +467,7 @@ snippet patchwork_examples
 
 snippet corrfunnel "correlation funnel visualization"
 	library(correlationfunnel)
+	num_rows = nrow(${1:iris})
 	${1:iris} %>%
 		{.[, colSums(is.na(.)) / num_rows < 0.95]} %>%
 		mutate_if(is.character, replace_na, replace = 'NA') %>%
