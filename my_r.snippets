@@ -606,6 +606,48 @@ snippet object_size "get size of specific variables in environment"
 snippet auc
 	suppressMessages({ auc(roc(${1:actual}, ${1:pred})) %>% as.numeric() %>% print() })
 
+snippet confmatrix
+	confusion_matrix <- function(pred_scores, actuals, threshold = 0.5) {
+	  cm <-
+	    tibble(pred_label   = if_else(pred_scores >= threshold, 'GOOD', 'BAD'),
+	           actual_label = actuals) %>%
+	    add_row(pred_label = 'BAD',  actual_label = 'BAD') %>%
+	    add_row(pred_label = 'GOOD', actual_label = 'GOOD') %>%
+	    table()
+	  cm["BAD", "BAD"]   <- cm["BAD", "BAD"]   - 1
+	  cm["GOOD", "GOOD"] <- cm["GOOD", "GOOD"] - 1
+
+	  print(glue('threshold = {threshold}'))
+	  # print(cm)
+	  cm %>%
+	    as.data.frame() %>%
+	    pivot_wider(names_from = actual_label, values_from = Freq) %>%
+	    mutate(TOTAL = BAD + GOOD) %>%
+	    add_row(pred_label = 'TOTAL', BAD = sum(.$BAD), GOOD = sum(.$GOOD), TOTAL = sum(.$TOTAL)) %>%
+	    as.data.frame() %>%
+	    print()
+
+	  precision_GOOD <- cm['GOOD','GOOD'] / sum(cm['GOOD',])
+	  recall_GOOD	   <- cm['GOOD','GOOD'] / sum(cm[,'GOOD'])
+	  coverage_GOOD  <- sum(cm['GOOD',])  / sum(cm)
+
+	  precision_BAD  <- cm['BAD','BAD']   / sum(cm['BAD',])
+	  recall_BAD 	   <- cm['BAD','BAD']   / sum(cm[,'BAD'])
+	  coverage_BAD   <- sum(cm['BAD',])   / sum(cm)
+
+	  print(glue(''))
+	  print(glue('precision_GOOD = {precision_GOOD %>% round(3)}'))
+	  print(glue('   recall_GOOD = {   recall_GOOD %>% round(3)}'))
+	  print(glue(' coverage_GOOD = { coverage_GOOD %>% round(3)}'))
+	  print(glue('   fscore_GOOD = {(2 * recall_GOOD * precision_GOOD / (recall_GOOD + precision_GOOD)) %>% round(3)}'))
+	  print(glue(''))
+	  print(glue('precision_BAD = {precision_BAD %>% round(3)}'))
+	  print(glue('   recall_BAD = {   recall_BAD %>% round(3)}'))
+	  print(glue(' coverage_BAD = { coverage_BAD %>% round(3)}'))
+	  print(glue('   fscore_BAD = {(2 * recall_BAD * precision_BAD / (recall_BAD + precision_BAD)) %>% round(3)}'))
+	  print(glue(''))
+	}
+
 snippet xgbmodel_reg
 	dta_to_build_model_with <- ${1:data}
 	target_variable <- '${2:targetvar}'
