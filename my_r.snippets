@@ -837,7 +837,7 @@ snippet datatable
 	# 	mutate_if(is.numeric, round, digits = 1)
 	display_me %>%
 		datatable(
-			filter = 'top',
+			#filter = 'top',
 			rownames = FALSE,
 			extensions = 'Buttons',
 			options = list(
@@ -851,7 +851,7 @@ snippet datatable
 				# column centering/sizing
 				columnDefs = list(
 					list(className = 'dt-center', targets = '_all'),
-					list(width = paste0(100 / ncol(display_me), '%'), targets = '_all')
+					#list(width = paste0(100 / ncol(display_me), '%'), targets = '_all')
 					#list(width = '120px', targets = c(4,5))  # columns 4 & 5 to be 120 pixels wide
 				),
 
@@ -864,7 +864,7 @@ snippet datatable
 			)
 		) %>%
 		formatStyle(1:ncol(display_me), lineHeight = '40%') %>%
-		formatRound(colnames(display_me)[display_me %>% map_lgl(is.numeric)], digits=1)
+		formatRound(colnames(display_me)[display_me %>% map_lgl(is.numeric)], digits = 1)
 
 # ------------------------------------------------------------
 # parallelism
