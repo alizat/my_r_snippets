@@ -826,12 +826,15 @@ snippet radioButtons
 	)
 
 snippet datatable
-	display_me = ${1:data_df}
+	display_me <- ${1:data_df}
 	colnames(display_me) <-
 		colnames(display_me) %>%
 		str_split('_') %>%
 		map_chr(~ .x %>% unlist() %>% paste(collapse = ' ')) %>%
 		str_to_title()
+	# display_me <-
+	# 	display_me %>%
+	# 	mutate_if(is.POSIXt, function(my_date) {my_date %>% format('%b %d, %Y')})
 	# display_me <-
 	# 	display_me %>%
 	# 	mutate_if(is.numeric, round, digits = 1)
