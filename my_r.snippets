@@ -829,46 +829,47 @@ snippet datatable
 	display_me <- iris
 	colnames(display_me) <-
 		colnames(display_me) %>%
-	  str_split('_') %>%
-	  map_chr(~ .x %>% unlist() %>% paste(collapse = ' ')) %>%
-	  str_to_title()
+		str_split('_') %>%
+		map_chr(~ .x %>% unlist() %>% paste(collapse = ' ')) %>%
+		str_to_title()
 	display_me <-
-	  display_me %>%
-	  mutate_if(is.POSIXt, function(my_date) {my_date %>% format('%b %d, %Y')})
-	  #mutate_if(is.POSIXt, function(my_date) {my_date %>% format('%Y-%m-%d %H:%M')})
+		display_me %>%
+		mutate_if(is.POSIXt, function(my_date) {my_date %>% format('%b %d, %Y')})
+	#mutate_if(is.POSIXt, function(my_date) {my_date %>% format('%Y-%m-%d %H:%M')})
 	display_me %>%
-	  datatable(
-	      filter = 'top',
-	      rownames = FALSE,
-	      extensions = 'Buttons',
-	      options = list(
-	          dom = 'ltipB',
-	          pageLength = 10,
-
-	          # enable horizontal scroll
-	          #autoWidth = TRUE,
-	          scrollX = TRUE,
-
-	          # column centering/sizing
-	          columnDefs = list(
-	              list(className = 'dt-center', targets = '_all'),
-	              #list(width = paste0(100 / ncol(display_me), '%'), targets = '_all')
-	              #list(width = '200px', targets = c(0,1))  # first two columns to be 200 pixels wide
-	              list(width = '50%', targets = c('Species'))  # the 'Species' column to be 300 pixels wide
-	          ),
-
-	          # export buttons
-	          buttons = list(
-	              list(extend = 'copy',  title = NULL),
-	              list(extend = 'csv',   filename = glue('exported_data_{today() %>% str_replace_all("-", "_")}')),
-	              list(extend = 'excel', filename = glue('exported_data_{today() %>% str_replace_all("-", "_")}'))
-	          )
-	      )
-	  ) %>%
-	  formatStyle(1:ncol(display_me), lineHeight = '40%') %>%
-	  formatRound(colnames(display_me)[display_me %>% map_lgl(is.numeric)], digits=1) %>%
-	  #formatRound(c('Sepal.length', 'Sepal.width'), digits=1) %>%
-	  formatStyle(c('Species'), `border-left` = "solid 2px")
+		datatable(
+			filter = 'top',
+			rownames = FALSE,
+			extensions = 'Buttons',
+			#editable = TRUE,
+			options = list(
+				dom = 'ltipB',
+				pageLength = 10,
+				
+				# enable horizontal scroll
+				#autoWidth = TRUE,
+				scrollX = TRUE,
+				
+				# column centering/sizing
+				columnDefs = list(
+					list(className = 'dt-center', targets = '_all'),
+					#list(width = paste0(100 / ncol(display_me), '%'), targets = '_all')
+					#list(width = '200px', targets = c(0,1))  # first two columns to be 200 pixels wide
+					list(width = '50%', targets = c('Species'))  # the 'Species' column to be 300 pixels wide
+				),
+				
+				# export buttons
+				buttons = list(
+					list(extend = 'copy',  title = NULL),
+					list(extend = 'csv',   filename = glue('exported_data_{today() %>% str_replace_all("-", "_")}')),
+					list(extend = 'excel', filename = glue('exported_data_{today() %>% str_replace_all("-", "_")}'))
+				)
+			)
+		) %>%
+		formatStyle(1:ncol(display_me), lineHeight = '40%') %>%
+		formatRound(colnames(display_me)[display_me %>% map_lgl(is.numeric)], digits=1) %>%
+		#formatRound(c('Sepal.length', 'Sepal.width'), digits=1) %>%
+		formatStyle(c('Species'), `border-left` = "solid 2px")
 
 # ------------------------------------------------------------
 # parallelism
