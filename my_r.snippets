@@ -1036,3 +1036,40 @@ snippet grp_smr
 	  group_by(${2:grpvar}) %>%
 	  summarise(${3:across(everything(), mean)}) %>%
 	  ungroup()
+
+# ------------------------------------------------------------
+# chat gpt
+# ------------------------------------------------------------
+
+snippet chatgpt
+	api_key <- "sk-<>"
+	chat_gpt_caller <- function(system_prompt, user_prompt) {
+	    # form the final prompt
+	    final_prompt = list(
+	        list(role = "system", content = system_prompt),
+	        list(role =   "user", content = user_prompt)
+	    )
+	    
+	    # chat gpt
+	    response <- httr::POST(
+	        "https://api.openai.com/v1/chat/completions",
+	        httr::add_headers(Authorization = paste("Bearer", api_key)),
+	        httr::content_type_json(),
+	        encode = "json",
+	        body = list(
+	            model = "gpt-4o-mini",
+	            messages = final_prompt,
+	            temperature = 0.1,
+	            seed = 1
+	            # top_p = 0.01
+	            # frequency_penalty=0,
+	        )
+	    )
+	    
+	    # parse response
+	    content <- httr::content(response, as = "text", encoding = 'UTF-8')
+	    parsed_content <- jsonlite::fromJSON(content)\$choices\$message\$content
+	    
+	    # return    
+	    parsed_content
+	}
