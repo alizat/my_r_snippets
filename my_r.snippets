@@ -624,7 +624,7 @@ snippet confmatrix
 	    as.data.frame() %>%
 	    pivot_wider(names_from = actual_label, values_from = Freq) %>%
 	    mutate(TOTAL = BAD + GOOD) %>%
-	    add_row(pred_label = 'TOTAL', BAD = sum(.$BAD), GOOD = sum(.$GOOD), TOTAL = sum(.$TOTAL)) %>%
+	    add_row(pred_label = 'TOTAL', BAD = sum(.\$BAD), GOOD = sum(.\$GOOD), TOTAL = sum(.\$TOTAL)) %>%
 	    as.data.frame() %>%
 	    print()
 
